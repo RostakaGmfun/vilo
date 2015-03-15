@@ -2,6 +2,7 @@
 #define CONFIG_HPP
 #include <string>
 #include <vector>
+#include <map>
 
 #include <LuaState.hpp>
 
@@ -32,12 +33,12 @@ public:
     std::string GetString(std::string config, std::string name);
 
 private:
-    ConfigSystem(): m_state(NULL) {}
+    ConfigSystem(){}
 
 private:
     std::vector<std::string> m_configs;
     std::vector<ConfigVar*> m_vars;
-    LuaState* m_state;
+    std::map<std::string,LuaState*> m_states;
 };
 
 #endif //CONFIG_HPP

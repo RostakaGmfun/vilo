@@ -7,7 +7,11 @@ public:
     Window();
     bool Init();
     void EventLoop();
-
+    void Quit();
+    int MouseX();
+    int MouseY();
+    bool MouseDown(int button); //0=LMB,1=MMB, 2=RMB
+    bool KeyDown(SDLK_Keycode);
 private:
     void ReadConfig();
 

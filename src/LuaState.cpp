@@ -5,6 +5,10 @@ LuaState::LuaState(): m_source(""), m_state(NULL) {
     InitState();
 }
 
+LuaState::LuaState(std::string src): m_source(src), m_state(NULL) {
+    InitState();
+}
+
 bool LuaState::InitState() {
     if(m_state)
         return true;

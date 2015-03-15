@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include <ConfigSystem.hpp>
+#include <ConfigVars.hpp>
 
 int OS::Main() {
     InitSystems();
@@ -16,5 +17,6 @@ void OS::Log(const char* format, ...) {
 }
 
 void OS::InitSystems() {
+    ConfigSystem::get()->AddConfigFile(MAIN_CFG);
     ConfigSystem::get()->Init();
 }
