@@ -2,16 +2,15 @@
 #define WINDOW_HPP
 #include <SDL2/SDL.h>
 
+class InputManager;
+
 class Window {
 public:
     Window();
     bool Init();
     void EventLoop();
     void Quit();
-    int MouseX();
-    int MouseY();
-    bool MouseDown(int button); //0=LMB,1=MMB, 2=RMB
-    bool KeyDown(SDLK_Keycode);
+    SDL_Window* GetSDLWin() const { return m_window; }
 private:
     void ReadConfig();
 

@@ -8,7 +8,7 @@ public:
         return &instance;
     }
 
-    int Main();
+    int Init();
     void Log(const char* format, ...);
 
 private:

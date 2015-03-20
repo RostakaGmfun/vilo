@@ -3,6 +3,7 @@
 #include <string>
 #include <ConfigSystem.hpp>
 #include <ConfigVars.hpp>
+#include <InputManager.hpp>
 
 Window::Window(): m_window(NULL) {
 
@@ -47,6 +48,14 @@ void Window::EventLoop() {
             switch(e.type) {
             case SDL_QUIT:
                 quit = true;
+            break;
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+            case SDL_MOUSEMOTION:
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEBUTTONUP:
+            case SDL_MOUSEWHEEL:
+            InputManager::get()->ProcessEvent(e);
             break;
             default:
             break;

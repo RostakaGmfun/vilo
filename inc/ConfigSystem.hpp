@@ -6,17 +6,19 @@
 
 #include <LuaState.hpp>
 
-enum CONFIG_VAR_T {
-    CONFIG_TINT = 1,
-    CONFIG_TSTR
+enum VarType {
+    VAR_T_STR,
+    VAR_T_INT,
+    VAR_T_DBL
 };
 
-struct ConfigVar {
-    CONFIG_VAR_T type;
-    std::string config;
+struct EnvVar {
+    char *name;
+    VarType type;
     union {
-        std::string str;
-        int num;
+        char *strVal;
+        int intVal;
+        double dblVal;
     };
 };
 
@@ -28,16 +30,15 @@ public:
     }
 
     void AddConfigFile(std::string fname);
-    void Init();
+    void Init(EnvVar* vars, int numVars);
     int GetInt(std::string config, std::string name);
     std::string GetString(std::string config, std::string name);
 
 private:
     ConfigSystem(){}
-
+    void SetupEnvironment(EnvVar *vars, int numVars);
 private:
     std::vector<std::string> m_configs;
-    std::vector<ConfigVar*> m_vars;
     std::map<std::string,LuaState*> m_states;
 };
 

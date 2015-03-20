@@ -2,7 +2,7 @@
 #include <Window.hpp>
 
 int main() {
-    OS::get()->Main();
+    OS::get()->Init();
     Window* win = new Window();
     win->Init();
     win->EventLoop();

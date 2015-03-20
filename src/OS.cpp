@@ -5,7 +5,7 @@
 #include <ConfigSystem.hpp>
 #include <ConfigVars.hpp>
 
-int OS::Main() {
+int OS::Init() {
     InitSystems();
 }
 
@@ -18,5 +18,12 @@ void OS::Log(const char* format, ...) {
 
 void OS::InitSystems() {
     ConfigSystem::get()->AddConfigFile(MAIN_CFG);
-    ConfigSystem::get()->Init();
+    EnvVar* vars = new EnvVar[2];
+    vars[0].type=VAR_T_STR;
+    vars[0].name="EngineCodename";
+    vars[0].strVal="Wizley Grizley";
+    vars[1].type=VAR_T_INT;
+    vars[1].name="testvar";
+    vars[1].intVal=1;
+    ConfigSystem::get()->Init(vars, 2);
 }

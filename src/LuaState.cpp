@@ -57,3 +57,12 @@ std::string LuaState::GetString(std::string name) {
         OS::get()->Log("LuaState::GetString(): Trying to get %s as string failed!\n", name.c_str());
     return val;
 }
+
+bool LuaState::SetInt(std::string name, int val) {
+    if(!m_state)
+        return false;
+    lua_pushnumber(m_state, val);
+    lua_setglobal(m_state, name.c_str());
+    OS::get()->Log("asdasd\n");
+    return true;
+}
