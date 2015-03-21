@@ -12,14 +12,11 @@ struct KeyboardEvent {
 };
 
 struct MouseEvent {
-    MouseEvent(int _x, int _y,bool *_state):x(_x), y(_y) {
-        if(_state)
-            for(int i = 0;i<3;i++)
-                state[i] = _state[i];
-    }
+    MouseEvent(int _x, int _y,int _press, bool _down):x(_x), y(_y), press(_press), down(_down) {}
     int x;
     int y;
-    bool state[3];
+    int press; //0 - LMB, 1 - MMB, 2 - RMB
+    bool down; //true if button press, false if release
 };
 
 typedef void (*KeyboardCallback)(KeyboardEvent ev);

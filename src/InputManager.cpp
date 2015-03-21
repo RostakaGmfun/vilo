@@ -34,14 +34,47 @@ void InputManager::ProcessEvent(SDL_Event ev) {
             m_mouseX = ev.motion.x;
             m_mouseY = ev.motion.y;
         break;
-        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONDOWN: {
+            int press = -1;
+            if(ev.button.button==SDL_BUTTON_LEFT) {
+                m_mouseState[0] = true;
+                press = 0;
+            }
             
+            if(ev.button.button==SDL_BUTTON_MIDDLE) {
+                m_mouseState[1] = true;
+                press = 1;
+            }
+            if(ev.button.button==SDL_BUTTON_RIGHT) {
+                m_mouseState[2] = true;
+                press = 2;
+            }
+            if(m_mouse_callback)
+                m_mouse_callback(MouseEvent(ev.button.x, ev.button.y, press, true));
         break;
-        case SDL_MOUSEBUTTONUP:
+        }
+        case SDL_MOUSEBUTTONUP: {
+            int press = -1;
+            if(ev.button.button==SDL_BUTTON_LEFT) {
+                m_mouseState[0] = true;
+                press = 0;
+            }
             
+            if(ev.button.button==SDL_BUTTON_MIDDLE) {
+                m_mouseState[1] = true;
+                press = 1;
+            }
+            if(ev.button.button==SDL_BUTTON_RIGHT) {
+                m_mouseState[2] = true;
+                press = 2;
+            }
+            if(m_mouse_callback)
+                m_mouse_callback(MouseEvent(ev.button.x, ev.button.y, press, false));
+        break;
+        }
         break;
         case SDL_MOUSEWHEEL:
-            
+         //TODO   
         break;
         default:
         break;
