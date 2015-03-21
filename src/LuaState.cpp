@@ -63,6 +63,14 @@ bool LuaState::SetInt(std::string name, int val) {
         return false;
     lua_pushnumber(m_state, val);
     lua_setglobal(m_state, name.c_str());
-    OS::get()->Log("asdasd\n");
     return true;
 }
+
+bool LuaState::SetString(std::string name, std::string val) {
+    if(!m_state)
+        return false;
+    lua_pushstring(m_state, val.c_str());
+    lua_setglobal(m_state, name.c_str());
+    return true;
+}
+

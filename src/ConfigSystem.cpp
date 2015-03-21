@@ -21,6 +21,7 @@ void ConfigSystem::SetupEnvironment(EnvVar *vars, int numVars) {
             switch(vars[j].type) {
             case VAR_T_STR:
                 OS::get()->Log("[ConfigSystem] Setting env var: %s=%s\n",vars[j].name,vars[j].strVal);
+                i->second->SetString(vars[j].name, vars[j].strVal);
             break;
             case VAR_T_INT:
                 OS::get()->Log("[ConfigSystem] Setting env var: %s=%i\n", vars[j].name, vars[j].intVal);
