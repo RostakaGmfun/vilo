@@ -55,7 +55,7 @@ void Window::EventLoop() {
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
             case SDL_MOUSEWHEEL:
-            InputManager::get()->ProcessEvent(e);
+                InputManager::get()->ProcessEvent(e);
             break;
             default:
             break;
