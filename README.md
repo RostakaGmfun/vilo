@@ -24,6 +24,6 @@ use the same indentation as you see everywhere in the code:
         // and so on...
     }
     ```
-* Source files have `.cpp` extension and are cept in `src/` directory.
-* Include files have `.hpp` extension and are cept in `inc/` directory.
+* Source files have `.cpp` extension and are kept in `src/` directory.
+* Include files have `.hpp` extension and are kept in `inc/` directory.
 * Give your pull requests meaningful names and detailed description.
