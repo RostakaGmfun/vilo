@@ -12,9 +12,11 @@ public:
     
     int GetInt(std::string name);
     std::string GetString(std::string name);
+    double GetDouble(std::string name);
     
     bool SetInt(std::string name, int val);
     bool SetString(std::string name, std::string val);
+    bool SetDouble(std::string name, double val);
 private:
     bool InitState();
 

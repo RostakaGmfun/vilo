@@ -58,6 +58,20 @@ std::string LuaState::GetString(std::string name) {
     return val;
 }
 
+double LuaState::GetDouble(std::string name) {
+    if(!m_state)
+        return 0;
+    lua_getglobal(m_state, name.c_str());
+    
+    double val = 0;
+    if(lua_isnumber(m_state, lua_gettop(m_state))) {
+        val = lua_tonumber(m_state, lua_gettop(m_state));
+    }
+    else
+        OS::get()->Log("LuaState::GetDouble(): Trying to get %s as double failed!\n", name.c_str());
+    return val;
+}
+
 bool LuaState::SetInt(std::string name, int val) {
     if(!m_state)
         return false;
@@ -74,3 +88,10 @@ bool LuaState::SetString(std::string name, std::string val) {
     return true;
 }
 
+bool LuaState::SetDouble(std::string name, double val) {
+    if(!m_state)
+        return false;
+    lua_pushnumber(m_state, val);
+    lua_setglobal(m_state, name.c_str());
+    return true;
+}
