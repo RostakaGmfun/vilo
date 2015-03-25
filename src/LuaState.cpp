@@ -25,7 +25,7 @@ void LuaState::Do(std::string src) {
     if(!src.empty())
         m_source = src;
     if(luaL_dofile(m_state, m_source.c_str())) {
-        OS::get()->Log("LuaState::Do(): failed to do file %s with error: \"%s\"\n",
+        OS::get()->Log("[LuaState::Do()]: failed to do file %s with error: \"%s\"\n",
         src.c_str(),lua_tostring(m_state, -1));
     }
 }
@@ -40,7 +40,7 @@ int LuaState::GetInt(std::string name) {
         val = lua_tonumber(m_state, lua_gettop(m_state));
     }
     else
-        OS::get()->Log("LuaState::GetInt(): Trying to get %s as integer failed!\n", name.c_str());
+        OS::get()->Log("[LuaState::GetInt()]: Trying to get %s as integer failed!\n", name.c_str());
     return val;
 }
 
@@ -54,7 +54,7 @@ std::string LuaState::GetString(std::string name) {
         val = lua_tostring(m_state, -1);
     }
     else
-        OS::get()->Log("LuaState::GetString(): Trying to get %s as string failed!\n", name.c_str());
+        OS::get()->Log("[LuaState::GetString()]: Trying to get %s as string failed!\n", name.c_str());
     return val;
 }
 
@@ -68,7 +68,7 @@ double LuaState::GetDouble(std::string name) {
         val = lua_tonumber(m_state, lua_gettop(m_state));
     }
     else
-        OS::get()->Log("LuaState::GetDouble(): Trying to get %s as double failed!\n", name.c_str());
+        OS::get()->Log("[LuaState::GetDouble()]: Trying to get %s as double failed!\n", name.c_str());
     return val;
 }
 
@@ -104,7 +104,7 @@ Argument LuaState::Call(std::string funcName, std::vector<Argument> args) {
     lua_getglobal(m_state, funcName.c_str());
     
     if(!lua_isfunction(m_state, lua_gettop(m_state))) {
-        OS::get()->Log("[LuaState::Call()]: function \"%s\" not declared",funcName.c_str());
+        OS::get()->Log("[LuaState::Call()]: function \"%s\" not declared!\n",funcName.c_str());
         return Argument(0);
     }
 
@@ -122,6 +122,8 @@ Argument LuaState::Call(std::string funcName, std::vector<Argument> args) {
         }
     }
     lua_call(m_state, args.size(), 1);
+    if(lua_isnil(m_state, -1))
+        return Argument(0);
     if(lua_isnumber(m_state,-1)) {
         double n = lua_tonumber(m_state, -1);
         if(n==(int)n) //integer

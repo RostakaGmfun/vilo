@@ -22,11 +22,15 @@ void OS::InitSystems() {
     EnvVar* vars = new EnvVar[2];
     vars[0].type=VAR_T_STR;
     vars[0].name="EngineCodename";
-    vars[0].strVal="Grizley";
+    vars[0].strVal="WizleyGrizley";
     vars[1].type=VAR_T_INT;
     vars[1].name="testvar";
     vars[1].intVal=1;
     ConfigSystem::get()->Init(vars, 2);
     LuaState* st = ConfigSystem::get()->GetLuaState("config.lua");
-    st->Call("test",std::vector<Argument>());
+    std::vector<Argument> args;
+    args.push_back(2);
+    args.push_back(3);
+    Argument ret = st->Call("test",args);
+    Log("Result: %i\n",ret.intVal);
 }
