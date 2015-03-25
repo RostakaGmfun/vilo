@@ -1,5 +1,6 @@
 #include <ConfigSystem.hpp>
 #include <OS.hpp>
+#include <LuaState.hpp>
 
 void ConfigSystem::AddConfigFile(std::string fname) {
     m_configs.push_back(fname);
@@ -51,4 +52,10 @@ std::string ConfigSystem::GetString(std::string config, std::string name) {
     return "";
 }
 
-
+LuaState* ConfigSystem::GetLuaState(std::string configName) {
+    for(auto i = m_states.begin(); i!=m_states.end();i++) {
+        if(i->first==configName)
+            return i->second;
+    }
+    return NULL;
+}

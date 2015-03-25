@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include <LuaState.hpp>
+class LuaState;
 
 enum VarType {
     VAR_T_STR,
@@ -34,6 +34,7 @@ public:
     int GetInt(std::string config, std::string name);
     std::string GetString(std::string config, std::string name);
 
+    LuaState* GetLuaState(std::string configName);
 private:
     ConfigSystem(){}
     void SetupEnvironment(EnvVar *vars, int numVars);

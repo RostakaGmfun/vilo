@@ -4,6 +4,7 @@
 
 #include <ConfigSystem.hpp>
 #include <ConfigVars.hpp>
+#include <LuaState.hpp>
 
 int OS::Init() {
     InitSystems();
@@ -21,9 +22,11 @@ void OS::InitSystems() {
     EnvVar* vars = new EnvVar[2];
     vars[0].type=VAR_T_STR;
     vars[0].name="EngineCodename";
-    vars[0].strVal="Wizley Grizley";
+    vars[0].strVal="Grizley";
     vars[1].type=VAR_T_INT;
     vars[1].name="testvar";
     vars[1].intVal=1;
     ConfigSystem::get()->Init(vars, 2);
+    LuaState* st = ConfigSystem::get()->GetLuaState("config.lua");
+    st->Call("test",std::vector<Argument>());
 }

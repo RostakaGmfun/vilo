@@ -95,3 +95,43 @@ bool LuaState::SetDouble(std::string name, double val) {
     lua_setglobal(m_state, name.c_str());
     return true;
 }
+
+Argument LuaState::Call(std::string funcName, std::vector<Argument> args) {
+    if(!m_state) {
+        OS::get()->Log("[LuaState::Call()]: not initialised\n");
+        return Argument((int)0);
+    }
+    lua_getglobal(m_state, funcName.c_str());
+    
+    if(!lua_isfunction(m_state, lua_gettop(m_state))) {
+        OS::get()->Log("[LuaState::Call()]: function \"%s\" not declared",funcName.c_str());
+        return Argument(0);
+    }
+
+    for(auto i = args.begin();i!=args.end();i++) {
+        switch(i->t) {
+            case ARG_INT:
+                lua_pushnumber(m_state, i->intVal);
+                break;
+            case ARG_DBL:
+                lua_pushnumber(m_state, i->dblVal);
+                break;
+            case ARG_STR:
+                lua_pushstring(m_state, i->strVal.c_str());
+                break;
+        }
+    }
+    lua_call(m_state, args.size(), 1);
+    if(lua_isnumber(m_state,-1)) {
+        double n = lua_tonumber(m_state, -1);
+        if(n==(int)n) //integer
+            return Argument((int)n);
+        else
+            return Argument(n);
+    }
+
+    if(lua_isstring(m_state, -1))
+        return Argument(lua_tostring(m_state, -1));
+}
+
+
