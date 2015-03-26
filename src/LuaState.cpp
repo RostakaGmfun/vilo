@@ -137,3 +137,52 @@ Argument LuaState::Call(std::string funcName, std::vector<Argument> args) {
 }
 
 
+Argument LuaState::PCall(std::string funcName, std::vector<Argument> args) {
+    if(!m_state) {
+        OS::get()->Log("[LuaState::Call()]: not initialised\n");
+        return Argument((int)0);
+    }
+    lua_getglobal(m_state, funcName.c_str());
+    
+    if(!lua_isfunction(m_state, lua_gettop(m_state))) {
+        OS::get()->Log("[LuaState::Call()]: function \"%s\" not declared!\n",funcName.c_str());
+        return Argument(0);
+    }
+
+    for(auto i = args.begin();i!=args.end();i++) {
+        switch(i->t) {
+            case ARG_INT:
+                lua_pushnumber(m_state, i->intVal);
+                break;
+            case ARG_DBL:
+                lua_pushnumber(m_state, i->dblVal);
+                break;
+            case ARG_STR:
+                lua_pushstring(m_state, i->strVal.c_str());
+                break;
+        }
+    }
+    int ret = lua_pcall(m_state, args.size(), 1, 0);
+    if(ret) {
+        if(ret = LUA_ERRRUN) {
+            OS::get()->Log("[LuaState::PCall()] Error running script %s\n\tErr msg: \"%s\"", m_source.c_str(), lua_tostring(m_state, -1));
+            return Argument(0);
+        }
+        else {
+            OS::get()->Log("[LuaState::PCall()] Memory allocation error in %s\n\tErr msg: \"%s\"", m_source.c_str(), lua_tostring(m_state, -1));
+            return Argument(0); 
+        }
+    }
+    if(lua_isnil(m_state, -1))
+        return Argument(0);
+    if(lua_isnumber(m_state,-1)) {
+        double n = lua_tonumber(m_state, -1);
+        if(n==(int)n) //integer
+            return Argument((int)n);
+        else
+            return Argument(n);
+    }
+
+    if(lua_isstring(m_state, -1))
+        return Argument(lua_tostring(m_state, -1));
+}

@@ -31,6 +31,6 @@ void OS::InitSystems() {
     std::vector<Argument> args;
     args.push_back(2);
     args.push_back(3);
-    Argument ret = st->Call("test",args);
+    Argument ret = st->PCall("test",args);
     Log("Result: %i\n",ret.intVal);
 }

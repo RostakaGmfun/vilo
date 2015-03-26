@@ -36,6 +36,7 @@ public:
     bool SetDouble(std::string name, double val);
 
     Argument Call(std::string funcName, std::vector<Argument> args);
+    Argument PCall(std::string funcName, std::vector<Argument> args); // protected call
 private:
     bool InitState();
 
