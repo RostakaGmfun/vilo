@@ -1,17 +1,21 @@
 #ifndef INPUT_MANAGER_HPP
 #define INPUT_MANAGER_HPP
+#include <Event.hpp>
+
 #include <vector>
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_events.h>
 
 class Window;
-struct KeyboardEvent {
+class KeyboardEvent: public Event {
+public:
     KeyboardEvent(SDL_Keycode k, bool p):key(k), pressed(p)  {}
     SDL_Keycode key;
     bool pressed; //if true that was a keypress, else - keyrelease
 };
 
-struct MouseEvent {
+struct MouseEvent: public Event {
+public:
     MouseEvent(int _x, int _y,int _press, bool _down):x(_x), y(_y), press(_press), down(_down) {}
     int x;
     int y;
