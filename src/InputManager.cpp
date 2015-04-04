@@ -1,6 +1,8 @@
 #include <InputManager.hpp>
 #include <Window.hpp>
 #include <OS.hpp>
+#include <EventManager.hpp>
+//hope code is readable guyz :D
 #include <algorithm>
 
 bool InputManager::Init(Window* win) {
@@ -17,16 +19,20 @@ void InputManager::ProcessEvent(SDL_Event ev) {
         case SDL_KEYDOWN:
             if(std::find(m_kbState.begin(), m_kbState.end(), ev.key.keysym.sym)==m_kbState.end()) {
                 m_kbState.push_back(ev.key.keysym.sym);
+                KeyboardEvent *event = new KeyboardEvent(ev.key.keysym.sym, true);
                 if(m_kb_callback)
-                    m_kb_callback(KeyboardEvent(ev.key.keysym.sym, true));
+                    m_kb_callback(event);
+                EventManager::get()->Emit((Event*)event);
             }
         break;
         case SDL_KEYUP: {
             auto i = std::find(m_kbState.begin(), m_kbState.end(), ev.key.keysym.sym);
             if(i!=m_kbState.end()) {
                 m_kbState.erase(i);
+                KeyboardEvent *event = new KeyboardEvent(ev.key.keysym.sym, false);
                 if(m_kb_callback)
-                    m_kb_callback(KeyboardEvent(ev.key.keysym.sym, false));
+                    m_kb_callback(event);
+                EventManager::get()->Emit((Event*)event);
             }
         }
         break;
@@ -49,8 +55,10 @@ void InputManager::ProcessEvent(SDL_Event ev) {
                 m_mouseState[2] = true;
                 press = 2;
             }
+            MouseEvent *event = new MouseEvent(ev.button.x, ev.button.y, press, true);
             if(m_mouse_callback)
-                m_mouse_callback(MouseEvent(ev.button.x, ev.button.y, press, true));
+                m_mouse_callback(event);
+            EventManager::get()->Emit((Event*)event);
         break;
         }
         case SDL_MOUSEBUTTONUP: {
@@ -68,8 +76,11 @@ void InputManager::ProcessEvent(SDL_Event ev) {
                 m_mouseState[2] = true;
                 press = 2;
             }
+            MouseEvent *event = new MouseEvent(ev.button.x, ev.button.y, press, false);
             if(m_mouse_callback)
-                m_mouse_callback(MouseEvent(ev.button.x, ev.button.y, press, false));
+                m_mouse_callback(event);
+            EventManager::get()->Emit((Event*)event);
+            OS::get()->Log("Hmmmm...\n");
         break;
         }
         break;
