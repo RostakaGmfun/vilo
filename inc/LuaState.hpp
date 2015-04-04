@@ -1,9 +1,12 @@
 #ifndef LUA_STATE_HPP
 #define LUA_STATE_HPP
 
+#include <Task.hpp>
+
 #include <lua5.1/lua.hpp>
 #include <string>
 #include <vector>
+
 
 enum ARG_TYPE {
     ARG_INT,
@@ -21,12 +24,17 @@ struct Argument {
     std::string strVal;
 };
 
-class LuaState {
+class LuaState: public Task {
 public:
-    LuaState();
+    //LuaState();
     LuaState(std::string src);
+    void SetSrc(std::string src);
+    std::string GetSrc() const { return m_source; }
     void Do(std::string src="");
     
+    virtual bool Init();
+    virtual int Run();
+
     int GetInt(std::string name);
     std::string GetString(std::string name);
     double GetDouble(std::string name);

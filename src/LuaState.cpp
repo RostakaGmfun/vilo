@@ -1,11 +1,14 @@
 #include <LuaState.hpp>
 #include <OS.hpp>
 
-LuaState::LuaState(): m_source(""), m_state(NULL) {
+/*LuaState::LuaState(): m_source(""), m_state(NULL), 
+        Task("NoName LuaState",0,TASK_SINGLESHOT) {
     InitState();
-}
+}*/
 
-LuaState::LuaState(std::string src): m_source(src), m_state(NULL) {
+LuaState::LuaState(std::string src): m_source(src), m_state(NULL),
+                      Task(std::string(std::string("LuaState: ")+src).c_str(),
+                      0,TASK_SINGLESHOT) {
     InitState();
 }
 
@@ -185,4 +188,12 @@ Argument LuaState::PCall(std::string funcName, std::vector<Argument> args) {
 
     if(lua_isstring(m_state, -1))
         return Argument(lua_tostring(m_state, -1));
+}
+
+bool LuaState::Init() {
+
+}
+
+int LuaState::Run() {
+    Do();
 }

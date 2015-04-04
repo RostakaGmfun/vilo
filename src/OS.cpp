@@ -11,7 +11,7 @@
 
 //will write dumb event sniffer which listens to all events, later will move it somwhere else...
 
-class EventSniffer: protected EventListener {
+class EventSniffer: public EventListener {
 public:
     EventSniffer(): EventListener(EVT_INPUT) {}
     virtual void HandleEvent(Event *evt) {
@@ -49,5 +49,5 @@ void OS::InitSystems() {
     Argument ret = st->PCall("test",args);
     Log("Result: %i\n",ret.intVal);
     EventSniffer *sniffer = new EventSniffer();
-    EventManager::get()->AddListener((EventListener*)sniffer);
+    EventManager::get()->AddListener(sniffer);
 }

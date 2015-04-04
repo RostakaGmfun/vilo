@@ -15,7 +15,7 @@ public:
     void AddListener(EventListener* listener);
     void Emit(Event* evt);
 private:
-    EventManager() {}
+    EventManager();
 
 private:
     std::vector<EventListener*> m_listeners;

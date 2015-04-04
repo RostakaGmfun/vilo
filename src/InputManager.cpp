@@ -22,7 +22,7 @@ void InputManager::ProcessEvent(SDL_Event ev) {
                 KeyboardEvent *event = new KeyboardEvent(ev.key.keysym.sym, true);
                 if(m_kb_callback)
                     m_kb_callback(event);
-                EventManager::get()->Emit((Event*)event);
+                EventManager::get()->Emit(event);
             }
         break;
         case SDL_KEYUP: {
@@ -32,7 +32,7 @@ void InputManager::ProcessEvent(SDL_Event ev) {
                 KeyboardEvent *event = new KeyboardEvent(ev.key.keysym.sym, false);
                 if(m_kb_callback)
                     m_kb_callback(event);
-                EventManager::get()->Emit((Event*)event);
+                EventManager::get()->Emit(event);
             }
         }
         break;
@@ -58,7 +58,7 @@ void InputManager::ProcessEvent(SDL_Event ev) {
             MouseEvent *event = new MouseEvent(ev.button.x, ev.button.y, press, true);
             if(m_mouse_callback)
                 m_mouse_callback(event);
-            EventManager::get()->Emit((Event*)event);
+            EventManager::get()->Emit(event);
         break;
         }
         case SDL_MOUSEBUTTONUP: {
@@ -79,8 +79,7 @@ void InputManager::ProcessEvent(SDL_Event ev) {
             MouseEvent *event = new MouseEvent(ev.button.x, ev.button.y, press, false);
             if(m_mouse_callback)
                 m_mouse_callback(event);
-            EventManager::get()->Emit((Event*)event);
-            OS::get()->Log("Hmmmm...\n");
+            EventManager::get()->Emit(event);
         break;
         }
         break;

@@ -5,8 +5,9 @@
 void TaskManager::AddTask(Task* task) {
     if(!task)
         return;
+    if(!task->Init())
+        return;
     m_tasks.push_back(task);
-    task->Init();
 }
 
 void TaskManager::Update() {
@@ -16,7 +17,11 @@ void TaskManager::Update() {
             t->Run();
             m_tasks.erase(i);
         }
-        else
-            t->Run();
+        else {
+            int ret = t->Run(); 
+            if(ret) {
+                OS::get()->Log("[TaskManager] Task returned error code %i", ret);
+            }
+        }
     }
 }
