@@ -1,8 +1,10 @@
 # VILO
+###(V is Vendetta, I is indie, L is lightweight, O is open)
+
 C++ game engine in the making.
 No graphics so far.
 Stay tuned for more info.
-
+At the evenings I stream the develoment at livecoding.tv. [My channel](https://www.livecoding.tv/rostakagmfun/)
 ##Contributing
 The project is really small for now and nothing valuable hasn't been done yet, 
 so it is recommended to wait for some time before contributing.
