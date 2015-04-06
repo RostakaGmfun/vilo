@@ -15,6 +15,7 @@ void TaskManager::Update() {
         Task *t = *i;
         if(t->GetFlags() & TASK_SINGLESHOT) { //run only once
             t->Run();
+            t->Terminate();
             m_tasks.erase(i);
         }
         else {

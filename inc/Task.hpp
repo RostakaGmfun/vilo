@@ -14,6 +14,7 @@ public:
     //will leave it for now
     virtual bool Init() = 0;
     virtual int Run() = 0;
+    virtual void Terminate() = 0;
     TASK_FLAGS GetFlags() const { return m_flags; }
 protected:
     const char* m_name;

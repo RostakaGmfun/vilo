@@ -1,14 +1,11 @@
 #include <LuaState.hpp>
 #include <OS.hpp>
 
-/*LuaState::LuaState(): m_source(""), m_state(NULL), 
-        Task("NoName LuaState",0,TASK_SINGLESHOT) {
+LuaState::LuaState(): m_source(""), m_state(NULL)  {
     InitState();
-}*/
+}
 
-LuaState::LuaState(std::string src): m_source(src), m_state(NULL),
-                      Task(std::string(std::string("LuaState: ")+src).c_str(),
-                      0,TASK_SINGLESHOT) {
+LuaState::LuaState(std::string src): m_source(src), m_state(NULL)  {
     InitState();
 }
 
@@ -22,15 +19,24 @@ bool LuaState::InitState() {
     luaL_openlibs(m_state);
 }
 
-void LuaState::Do(std::string src) {
-    if(!m_state)
-        return;
+bool LuaState::Do(std::string src) {
+    if(!m_state) {
+        return false;
+    }
     if(!src.empty())
         m_source = src;
     if(luaL_dofile(m_state, m_source.c_str())) {
         OS::get()->Log("[LuaState::Do()]: failed to do file %s with error: \"%s\"\n",
         src.c_str(),lua_tostring(m_state, -1));
+        return false;
     }
+    return true;
+}
+
+void LuaState::DoString(std::string str) {
+    if(!m_state)
+        return;
+    luaL_dostring(m_state, str.c_str());
 }
 
 int LuaState::GetInt(std::string name) {
@@ -190,10 +196,8 @@ Argument LuaState::PCall(std::string funcName, std::vector<Argument> args) {
         return Argument(lua_tostring(m_state, -1));
 }
 
-bool LuaState::Init() {
-
-}
-
-int LuaState::Run() {
-    Do();
+void LuaState::Cleanup() {
+    if(!m_state)
+        return;
+    lua_close(m_state);
 }

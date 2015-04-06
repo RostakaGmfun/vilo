@@ -24,16 +24,14 @@ struct Argument {
     std::string strVal;
 };
 
-class LuaState: public Task {
+class LuaState {
 public:
-    //LuaState();
+    LuaState();
     LuaState(std::string src);
     void SetSrc(std::string src);
     std::string GetSrc() const { return m_source; }
-    void Do(std::string src="");
-    
-    virtual bool Init();
-    virtual int Run();
+    bool Do(std::string src="");
+    void DoString(std::string str);
 
     int GetInt(std::string name);
     std::string GetString(std::string name);
@@ -43,8 +41,10 @@ public:
     bool SetString(std::string name, std::string val);
     bool SetDouble(std::string name, double val);
 
-    Argument Call(std::string funcName, std::vector<Argument> args);
-    Argument PCall(std::string funcName, std::vector<Argument> args); // protected call
+    Argument Call(std::string funcName, std::vector<Argument> args = std::vector<Argument>());
+    Argument PCall(std::string funcName, std::vector<Argument> args = std::vector<Argument>()); // protected call
+
+    void Cleanup();
 private:
     bool InitState();
 

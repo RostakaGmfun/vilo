@@ -8,6 +8,8 @@
 #include <EventManager.hpp>
 #include <Event.hpp>
 #include <EventListener.hpp>
+#include <Actor.hpp>
+#include <TaskManager.hpp>
 
 //will write dumb event sniffer which listens to all events, later will move it somwhere else...
 
@@ -42,12 +44,14 @@ void OS::InitSystems() {
     vars[1].name="testvar";
     vars[1].intVal=1;
     ConfigSystem::get()->Init(vars, 2);
-    LuaState* st = ConfigSystem::get()->GetLuaState("config.lua");
+    /*LuaState* st = ConfigSystem::get()->GetLuaState("config.lua");
     std::vector<Argument> args;
     args.push_back(2);
     args.push_back(3);
     Argument ret = st->PCall("test",args);
-    Log("Result: %i\n",ret.intVal);
+    Log("Result: %i\n",ret.intVal); */
+    Actor *a = new Actor("actor.lua", "MyLittleActor");
+    TaskManager::get()->AddTask(a);
     EventSniffer *sniffer = new EventSniffer();
     EventManager::get()->AddListener(sniffer);
 }
