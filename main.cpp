@@ -1,10 +1,14 @@
 #include <OS.hpp>
-#include <Window.hpp>
 
 int main() {
-    OS::get()->Init();
-    Window* win = new Window();
-    win->Init();
-    win->EventLoop();
+    if(OS::get()->Init())
+        return 0;
+    int ret = 0;
+    while(OS::get()->Run()) {
+        OS::get()->Cleanup();
+        if(OS::get()->Init())
+            break;
+    }
+    OS::get()->Cleanup();
     return 0;
 }

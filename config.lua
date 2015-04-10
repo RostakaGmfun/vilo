@@ -1,4 +1,4 @@
-windowTitle = "EngineTest: "..EngineCodename
+windowTitle = "EngineTest: "..Codename
 windowWidth = 800
 windowHeight = 600
 windowFullscreen = 0

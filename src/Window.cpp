@@ -21,6 +21,7 @@ bool Window::Init() {
         flags|=SDL_WINDOW_FULLSCREEN;
     m_window = SDL_CreateWindow(m_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                 m_width, m_height, flags);
+    return true;
 }
 
 void Window::ReadConfig() {
@@ -38,16 +39,16 @@ void Window::ReadConfig() {
     m_fullscreen = ConfigSystem::get()->GetInt(MAIN_CFG, WIN_FULLSCREEN);
 }
 
-void Window::EventLoop() {
-    if(!m_window) return;
-    bool quit = false;
+int Window::EventLoop() {
+    if(!m_window) return 0;
+    int quit = 1;
     SDL_Event e;
 
-    while(!quit) {
+   // while(!quit) {
         while(SDL_PollEvent(&e)!=0) {
             switch(e.type) {
             case SDL_QUIT:
-                quit = true;
+                quit = 0;
             break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
@@ -61,8 +62,9 @@ void Window::EventLoop() {
             break;
             }
         }
-    }
-    Quit();
+    //}
+    // Quit();
+    return quit;
 }
 
 void Window::Quit() {

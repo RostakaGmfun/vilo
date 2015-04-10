@@ -30,7 +30,7 @@ public:
     }
 
     void AddConfigFile(std::string fname);
-    void Init(EnvVar* vars, int numVars);
+    bool Init(EnvVar* vars, int numVars);
     int GetInt(std::string config, std::string name);
     std::string GetString(std::string config, std::string name);
 

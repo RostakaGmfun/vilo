@@ -11,10 +11,10 @@ void TaskManager::AddTask(Task* task) {
 }
 
 void TaskManager::Update() {
-    for(auto i = m_tasks.begin();i!=m_tasks.end();++i) {
+    for(auto i = m_tasks.begin();i!=m_tasks.end();i++) {
         Task *t = *i;
+        t->Run();
         if(t->GetFlags() & TASK_SINGLESHOT) { //run only once
-            t->Run();
             t->Terminate();
             m_tasks.erase(i);
         }

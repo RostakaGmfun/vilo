@@ -8,7 +8,7 @@ class Window {
 public:
     Window();
     bool Init();
-    void EventLoop();
+    int EventLoop(); //0 to exit, 1 to continue
     void Quit();
     SDL_Window* GetSDLWin() const { return m_window; }
 private:

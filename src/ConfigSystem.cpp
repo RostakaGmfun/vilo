@@ -6,12 +6,17 @@ void ConfigSystem::AddConfigFile(std::string fname) {
     m_configs.push_back(fname);
 }
 
-void ConfigSystem::Init(EnvVar *vars, int numVars) {    
+bool ConfigSystem::Init(EnvVar *vars, int numVars) {    
     for(int i = 0;i<m_configs.size();i++)
         m_states[m_configs[i]] = new LuaState(m_configs[i]);
     SetupEnvironment(vars, numVars);
-    for(int i = 0;i<m_configs.size();i++)
-        m_states[m_configs[i]]->Do();
+    for(int i = 0;i<m_configs.size();i++) {
+        if(!m_states[m_configs[i]]->Do()) {
+            OS::get()->Log("[ConfigSystem::Init()] error occured while procesing:"
+            " %s\n", m_configs[i].c_str());
+        }
+    }
+    return true;
 }
 
 void ConfigSystem::SetupEnvironment(EnvVar *vars, int numVars) {
