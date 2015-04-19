@@ -3,10 +3,11 @@
 
 #include <Task.hpp>
 
-#include <lua5.1/lua.hpp>
+#include <lua/lua.hpp>
 #include <string>
 #include <vector>
 
+class LuaState;
 
 enum ARG_TYPE {
     ARG_INT,
@@ -24,10 +25,16 @@ struct Argument {
     std::string strVal;
 };
 
+typedef int (*LuaFunction)(LuaState* state);
+typedef int (*lua_CFunction)(lua_State* state);
+
 class LuaState {
 public:
     LuaState();
     LuaState(std::string src);
+
+    //operator lua_State*() { return m_state; }
+    lua_State* GetState() const { return m_state; }
     void SetSrc(std::string src);
     std::string GetSrc() const { return m_source; }
     bool Do(std::string src="");
@@ -43,6 +50,8 @@ public:
 
     Argument Call(std::string funcName, std::vector<Argument> args = std::vector<Argument>());
     Argument PCall(std::string funcName, std::vector<Argument> args = std::vector<Argument>()); // protected call
+
+    bool RegisterFunc(LuaFunction f, std::string name);
 
     void Cleanup();
 private:

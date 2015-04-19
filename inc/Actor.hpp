@@ -12,7 +12,7 @@ public:
     virtual bool Init();
     virtual int Run();
     virtual void Terminate();
-    
+
     void CleanupLua();
 protected:
     std::string m_luaSrc;

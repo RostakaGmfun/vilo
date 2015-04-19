@@ -1,5 +1,6 @@
 #include <LuaState.hpp>
 #include <OS.hpp>
+#include <luabind/luabind.hpp>
 
 LuaState::LuaState(): m_source(""), m_state(NULL)  {
     InitState();
@@ -15,7 +16,7 @@ bool LuaState::InitState() {
     m_state = lua_open();
     if(!m_state)
         return false;
-
+    luabind::open(m_state);
     luaL_openlibs(m_state);
 }
 
@@ -174,11 +175,11 @@ Argument LuaState::PCall(std::string funcName, std::vector<Argument> args) {
     int ret = lua_pcall(m_state, args.size(), 1, 0);
     if(ret) {
         if(ret = LUA_ERRRUN) {
-            OS::get()->Log("[LuaState::PCall()] Error running script %s\n\tErr msg: \"%s\"", m_source.c_str(), lua_tostring(m_state, -1));
+            OS::get()->Log("[LuaState::PCall()] Error running script %s\n\tErr msg: \"%s\"\n", m_source.c_str(), lua_tostring(m_state, -1));
             return Argument(0);
         }
         else {
-            OS::get()->Log("[LuaState::PCall()] Memory allocation error in %s\n\tErr msg: \"%s\"", m_source.c_str(), lua_tostring(m_state, -1));
+            OS::get()->Log("[LuaState::PCall()] Memory allocation error in %s\n\tErr msg: \"%s\"\n", m_source.c_str(), lua_tostring(m_state, -1));
             return Argument(0); 
         }
     }
@@ -200,4 +201,10 @@ void LuaState::Cleanup() {
     if(!m_state)
         return;
     lua_close(m_state);
+}
+
+bool LuaState::RegisterFunc(LuaFunction f, std::string name) {
+    if(!m_state)
+        return false;
+    lua_register(m_state, name.c_str(), (lua_CFunction)f);
 }

@@ -1,6 +1,7 @@
 #include <OS.hpp>
 #include <stdarg.h>
 #include <stdio.h>
+#include <luabind/luabind.hpp>
 
 #include <Window.hpp>
 #include <ConfigSystem.hpp>
@@ -29,7 +30,7 @@ int OS::Init() {
         return 1;
     if(!InitWindow())
         return 1;
-    Actor *a = new Actor("scripts/actor.luac", "MyLittleActor");
+    Actor *a = new Actor("scripts/actor.lua", "MyLittleActor");
     TaskManager::get()->AddTask(a);
  
     return 0;
@@ -88,3 +89,10 @@ bool OS::InitWindow() {
     m_window = new Window();
     return m_window->Init();
 }
+
+void OS::Hello() {
+    OS::Log("Hello from lua\n");
+}
+
+
+#include <api/OS.api>

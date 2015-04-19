@@ -1,0 +1,17 @@
+#ifndef OS_API
+#define OS_API
+
+
+void OS::RegisterAPI(LuaState* state) {
+    using namespace luabind;
+    if(!state)
+        return;
+    open(state->GetState());
+    module(state->GetState()) [
+        class_<OS>("OS")
+        .def("Hello",&OS::Hello)
+    ];
+    globals(state->GetState())["OS"] = get();
+}
+
+#endif //OS_API

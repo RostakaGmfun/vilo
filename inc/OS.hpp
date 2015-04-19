@@ -1,6 +1,9 @@
 #ifndef OS_HPP
 #define OS_HPP
 
+//#include <LuaAPI.hpp>
+
+class LuaState;
 class Window;
 
 class OS {
@@ -9,11 +12,14 @@ public:
         static OS instance;
         return &instance;
     }
-
+    //LuaState* GetGState() const { return globalState; }
     int Init(); //returns 0 on success and nonzero on failure
     int Run(); // return 0 to exit and 1 to restart
     void Cleanup();
     void Log(const char* format, ...);
+    void Hello();
+    void RegisterAPI(LuaState *state);
+    //static LuaState *globalState;
 private:
     OS(): m_window(nullptr), m_retflag(0) {}
     //int InitSystems();
