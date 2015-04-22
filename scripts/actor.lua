@@ -14,6 +14,22 @@ function update()
     print("On update")
 end
 
+function onKeyPress(key)
+    print(key.." pressed")
+end
+
+function onKeyRelease(key)
+    print(key.." released")
+end
+
+function onMousePress(button)
+    print(button.." pressed")
+end
+
+function onMouseRelease(button)
+    print(button.." released")
+end
+
 --called on actor destroy
 --returns - nothing
 function destroy()

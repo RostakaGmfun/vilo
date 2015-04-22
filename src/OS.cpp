@@ -30,7 +30,7 @@ int OS::Init() {
         return 1;
     if(!InitWindow())
         return 1;
-    Actor *a = new Actor("scripts/actor.lua", "MyLittleActor");
+    Actor *a = new Actor("scripts/actor.lua", "MyLittleActor", EVT_INPUT);
     TaskManager::get()->AddTask(a);
  
     return 0;

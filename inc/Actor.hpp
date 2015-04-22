@@ -1,17 +1,22 @@
 #ifndef ACTOR_HPP
 #define ACTOR_HPP
+
 #include <Task.hpp>
+#include <EventListener.hpp>
 
 #include <string>
 
 class LuaState;
 
-class Actor: public Task {
+class Actor: public Task, public EventListener {
 public:
-    Actor(std::string luaSrcPath, std::string name);
+    Actor(std::string luaSrcPath, std::string name, int evtMask);
     virtual bool Init();
     virtual int Run();
     virtual void Terminate();
+    
+
+    virtual void HandleEvent(Event* evt);
 
     void CleanupLua();
 protected:

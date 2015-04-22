@@ -4,6 +4,7 @@
 #include <EventManager.hpp>
 //hope code is readable guyz :D
 #include <algorithm>
+#include <map>
 
 bool InputManager::Init(Window* win) {
     m_client = win;
@@ -93,4 +94,8 @@ void InputManager::ProcessEvent(SDL_Event ev) {
 
 bool InputManager::KeyDown(SDL_Keycode k) {
     return std::find(m_kbState.begin(), m_kbState.end(), k)==m_kbState.end();
+}
+
+std::string InputManager::ToLuaKey(KeyboardEvent* evt) {
+    static std::map<SDL_Keycode,std::string> sdl_to_lua;
 }

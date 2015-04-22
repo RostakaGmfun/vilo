@@ -5,18 +5,19 @@
 #include <vector>
 #include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_events.h>
+#include <string>
 
 class Window;
 class KeyboardEvent: public Event {
 public:
-    KeyboardEvent(SDL_Keycode k, bool p): Event(EVT_INPUT), key(k), pressed(p)  {}
+    KeyboardEvent(SDL_Keycode k, bool p): Event(EVT_INPUT, EVT_KB), key(k), pressed(p) {}
     SDL_Keycode key;
     bool pressed; //if true that was a keypress, else - keyrelease
 };
 
 struct MouseEvent: public Event {
 public:
-    MouseEvent(int _x, int _y,int _press, bool _down): Event(EVT_INPUT), x(_x), y(_y), press(_press), down(_down) {}
+    MouseEvent(int _x, int _y,int _press, bool _down): Event(EVT_INPUT, EVT_MOUSE), x(_x), y(_y), press(_press), down(_down) {}
     int x;
     int y;
     int press; //0 - LMB, 1 - MMB, 2 - RMB
@@ -40,6 +41,7 @@ public:
     void SetMouseCallback(MouseCallback cb) { m_mouse_callback = cb; }
     void SetKBCallback(KeyboardCallback cb) { m_kb_callback = cb; }
     void ProcessEvent(SDL_Event ev);
+    std::string ToLuaKey(KeyboardEvent* evt);
 private:
     InputManager():m_kb_callback(NULL), m_mouse_callback(NULL) {}
 

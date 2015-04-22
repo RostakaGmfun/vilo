@@ -2,22 +2,22 @@
 #include <OS.hpp>
 #include <APIDef.hpp>
 #include <LuaState.hpp>
+#include <InputManager.hpp>
+
 #include <luabind/luabind.hpp>
 #include <luabind/class.hpp>
+
 using namespace luabind;
 
-Actor::Actor(std::string luaSrcPath, std::string name):
+Actor::Actor(std::string luaSrcPath, std::string name, int evtMask):
       m_luaSrc(luaSrcPath), m_luaState(NULL), m_name(name),
-        Task(std::string("ACTOR_TASK_"+name).c_str(), 0, TASK_REPEATED) {
+        Task(std::string("ACTOR_TASK_"+name).c_str(), 0, TASK_REPEATED),
+        EventListener(evtMask) {
     
 }
 
 bool Actor::Init() {
     m_luaState = new LuaState(m_luaSrc);
-    /*open(m_luaState->GetState());
-    module(m_luaState->GetState()) [
-            def("Hello",&OS::Hello)
-    ]*/;
     OS::get()->RegisterAPI(m_luaState);
  
     if(!m_luaState->Do()) {
@@ -47,6 +47,18 @@ void Actor::Terminate() {
         return;
     m_luaState->Call(ACTOR_DESTROY);
     CleanupLua();
+}
+
+void Actor::HandleEvent(Event* evt) {
+    if(!evt||!m_luaState)
+        return;
+    switch(evt->GetType()) {
+    case EVT_KB:
+        KeyboardEvent* kbEvt = static_cast<KeyboardEvent*>(evt);
+        if(kbEvt->pressed) // keypress event
+            luabind::call_function<void>(m_luaState->GetState(),ACTOR_ONKEY_PRESS, InputManager::get()->ToLuaKey(kbEvt).c_str());
+
+    }
 }
 
 void Actor::CleanupLua() {
