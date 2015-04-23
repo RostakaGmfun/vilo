@@ -1,12 +1,11 @@
 #include <OS.hpp>
 #include <stdarg.h>
 #include <stdio.h>
-#include <luabind/luabind.hpp>
 
 #include <Window.hpp>
 #include <ConfigSystem.hpp>
 #include <ConfigVars.hpp>
-#include <LuaState.hpp>
+#include <lua/LuaState.hpp>
 #include <EventManager.hpp>
 #include <Event.hpp>
 #include <EventListener.hpp>
@@ -95,4 +94,4 @@ void OS::Hello() {
 }
 
 
-#include <api/OS.api>
+//#include <api/OS.api>

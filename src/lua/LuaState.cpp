@@ -14,7 +14,7 @@ LuaState::~LuaState() {
 bool LuaState::Init() {
     if(m_state)
         return true;
-
+    
     m_state = lua_open();
     if(!m_state)
         return false;
@@ -30,13 +30,13 @@ void LuaState::Cleanup() {
 bool LuaState::DoFile(std::string srcFile) {
     if(!m_state)
         return false;
-    if(!srcFile.empty())
+    if(!srcFile.empty()) {
         m_srcFile = srcFile;
-    else
         if(m_srcFile.empty()) {
             OS::get()->Log("[LuaState::DoFile()] No file given");
             return false;
         }
+    }
     
     if(luaL_dofile(m_state, m_srcFile.c_str())) {
         OS::get()->Log("[LuaState::DoFile(\"%s\")] failed with error: \"%s\"",

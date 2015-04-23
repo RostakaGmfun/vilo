@@ -2,107 +2,8 @@
 #define LUA1_STATE_HPP
 
 #include <string>
-#include <lua/lua.hpp>
+#include <lua/Lua_detail.hpp>
 
-namespace Lua_detail {
-
-    template<typename T> 
-    void stack_Push(T, lua_State* state);
-
-    template<typename T>
-    T stack_Pop(lua_State* state);
-    
-    template<typename T>
-    T get_Var(const char* varName, lua_State* state);
-
-    template<>
-    void stack_Push(int val, lua_State* state) {
-        if(!state)
-            return;
-        lua_pushinteger(state, val);
-    }
-
-    template<>
-    void stack_Push(double val, lua_State* state) {
-        if(!state)
-            return;
-        lua_pushnumber(state,val);
-    }
-
-    template<>
-    void stack_Push(std::string val, lua_State* state) {
-        if(!state)
-            return;
-        lua_pushstring(state,val.c_str());
-    }
-
-    template<>
-    void stack_Push(const char* val, lua_State* state) {
-        if(!state)
-            return;
-        lua_pushstring(state, val);
-    }
-
-    template<>
-    int stack_Pop(lua_State* state) {
-        if(!state)
-            return 0;
-        return lua_tointeger(state, lua_gettop(state));
-    }
-
-    template<>
-    double stack_Pop(lua_State* state) {
-        if(!state)
-            return 0;
-        return lua_tonumber(state, lua_gettop(state));
-    }
-
-    template<>
-    std::string stack_Pop(lua_State* state) {
-        if(!state)
-            return "";
-        return lua_tostring(state, lua_gettop(state));
-    }
-
-    template<>
-    int get_Var(const char* varName, lua_State* state) {
-        if(!state)
-            return 0;
-        lua_getglobal(state, varName);
-
-        int ret = 0;
-
-        if(lua_isnumber(state, lua_gettop(state)))
-            ret = lua_tointeger(state, lua_gettop(state));
-        return ret;
-    }
-    
-    template<>
-    double get_Var(const char* varName, lua_State* state) {
-        if(!state)
-            return 0;
-        lua_getglobal(state, varName);
-
-        double ret = 0;
-
-        if(lua_isnumber(state, lua_gettop(state)))
-            ret = lua_tonumber(state, lua_gettop(state));
-        return ret;
-    }
-    
-    template<>
-    std::string get_Var(const char* varName, lua_State* state) {
-        if(!state)
-            return 0;
-        lua_getglobal(state, varName);
-
-        std::string ret;
-
-        if(lua_isstring(state, lua_gettop(state)))
-            ret = lua_tostring(state, lua_gettop(state));
-        return ret;
-    }
-}
 
 class LuaState {
 public:
@@ -119,11 +20,38 @@ public:
 
 
     //low level stack manipulations
-    template<typename T> 
+    /*template<typename T> 
     void Push(T val) {
         Lua_detail::stack_Push<T>(val, m_state);
+    }*/
+
+    //template<>
+    void Push(int val) {
+        if(!m_state)
+            return;
+        lua_pushinteger(m_state, val);
     }
 
+    //template<>
+    void Push(double val) {
+        if(!m_state)
+            return;
+        lua_pushnumber(m_state,val);
+    }
+
+    //template<>
+    void Push(std::string val) {
+        if(!m_state)
+            return;
+        lua_pushstring(m_state,val.c_str());
+    }
+
+    //template<>
+    void Push(const char* val) {
+        if(!m_state)
+            return;
+        lua_pushstring(m_state, val);
+    }
     
     template<typename T>
     T Pop() {
@@ -133,6 +61,29 @@ public:
     template<typename T>
     T GetVar(const char* varName) {
         return Lua_detail::get_Var<T>(varName,m_state);
+    }
+    
+    void SetVar(const char* varName, int val) {
+        if(!m_state)
+            return;
+        lua_pushinteger(m_state, val);
+        lua_setglobal(m_state, varName);
+        return;
+    }
+    
+    void SetVar(const char* varName, double val) {
+        if(!m_state)
+            return;
+        lua_pushnumber(m_state, val);
+        lua_setglobal(m_state, varName);
+    }
+
+    void SetVar(const char* varName, const char* val) {
+        if(!m_state)
+            return;
+        lua_pushstring(m_state, val);
+        lua_setglobal(m_state, varName);
+
     }
 
 private:

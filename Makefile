@@ -1,5 +1,5 @@
 CC=g++
-SOURCES= src/OS.cpp src/Window.cpp src/ConfigSystem.cpp src/LuaState.cpp \
+SOURCES= src/OS.cpp src/Window.cpp src/ConfigSystem.cpp  \
     src/InputManager.cpp src/TaskManager.cpp src/EventManager.cpp \
     src/Actor.cpp src/lua/LuaState.cpp
 CCFLAGS= -I./inc/ -std=c++11
