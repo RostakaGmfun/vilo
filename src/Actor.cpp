@@ -1,7 +1,7 @@
 #include <Actor.hpp>
 #include <OS.hpp>
 #include <APIDef.hpp>
-#include <lua/LuaState.hpp>
+#include <LuaState.hpp>
 #include <InputManager.hpp>
 
 //#include <luabind/luabind.hpp>

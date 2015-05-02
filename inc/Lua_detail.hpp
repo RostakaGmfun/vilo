@@ -1,6 +1,8 @@
 #ifndef LUA_DETAIL
 #define LUA_DETAIL
-#include <lua/lua.hpp>
+#include <lua5.2/lua.hpp>
+#include <typeinfo>
+#include <OS.hpp>
 
 namespace Lua_detail {
 
@@ -8,7 +10,7 @@ namespace Lua_detail {
     void stack_Push(T, lua_State* state);
 
     template<typename T>
-    T stack_Pop(lua_State* state);
+    T stack_Get(lua_State* state);
     
     template<typename T>
     T get_Var(const char* varName, lua_State* state);
@@ -45,28 +47,28 @@ namespace Lua_detail {
     }
 
     template<>
-    inline int stack_Pop(lua_State* state) {
+    inline int stack_Get(lua_State* state) {
         if(!state)
             return 0;
         return lua_tointeger(state, lua_gettop(state));
     }
 
     template<>
-    inline double stack_Pop(lua_State* state) {
+    inline double stack_Get(lua_State* state) {
         if(!state)
             return 0;
         return lua_tonumber(state, lua_gettop(state));
     }
 
     template<>
-    inline std::string stack_Pop(lua_State* state) {
+    inline std::string stack_Get(lua_State* state) {
         if(!state)
             return "";
         return std::string(lua_tostring(state, lua_gettop(state)));
     }
 
     template<>
-    inline const char* stack_Pop(lua_State* state) {
+    inline const char* stack_Get(lua_State* state) {
         if(!state)
             return "";
         return lua_tostring(state, lua_gettop(state));
@@ -136,6 +138,41 @@ namespace Lua_detail {
         lua_setglobal(state, varName);
 
     }
+
+    template<typename T>
+    inline T push_Params(lua_State* state, T v) {
+        return v;
+    }
+
+    template<typename T, typename ... Args>
+    inline T push_Params(lua_State* state, T v, Args ... args) {
+        //OS::get()->Log("before\n");
+        //this->m_state = NULL;
+        //OS::get()->Log("after\n");
+        if(typeid(v)==typeid(int)) {
+            //Push(v);
+            lua_pushinteger(state, v);
+           // OS::get()->Log("%i\n",v);
+        }
+        if(typeid(v)==typeid(double)) {
+            //Push(v);
+            lua_pushnumber(state, v);
+            //OS::get()->Log("%f\n",v);
+        }
+        /*if(typeid(v)==typeid(std::string)) {
+            lua_pushstring(m_state, v.c_str());
+            OS::get()->Log("%s\n", v.c_str());
+        }*/
+        if(typeid(v)==typeid(const char*)) {
+            //lua_pushstring(m_state, v);
+            //OS::get()->Log("%s\n",v);
+        }
+    //    OS::get()->Log("ddd\n");
+  //      Push(v);
+        OS::get()->Log("asd\n");
+//        push_Params(state, args...);
+}
+
 }
 
 #endif //LUA_DETAIL

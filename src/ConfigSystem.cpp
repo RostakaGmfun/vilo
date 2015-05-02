@@ -1,7 +1,7 @@
 #include <ConfigSystem.hpp>
 #include <OS.hpp>
-//#include <LuaState.hpp>
-#include <lua/LuaState.hpp>
+#include <LuaState.hpp>
+
 void ConfigSystem::AddConfigFile(std::string fname) {
     m_configs.push_back(fname);
 }

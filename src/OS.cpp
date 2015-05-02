@@ -5,7 +5,7 @@
 #include <Window.hpp>
 #include <ConfigSystem.hpp>
 #include <ConfigVars.hpp>
-#include <lua/LuaState.hpp>
+#include <LuaState.hpp>
 #include <EventManager.hpp>
 #include <Event.hpp>
 #include <EventListener.hpp>
@@ -85,6 +85,12 @@ bool OS::Configure() {
 }
 
 bool OS::InitWindow() {
+    LuaState* st = new LuaState("scripts/actor.lua");
+    st->Init();
+    st->PushParams(10, 3.14, "string:p");
+    Log("%s\n",st->Pop<const char*>());
+    Log("%f\n",st->Pop<double>());
+    Log("%i\n",st->Pop<int>());
     m_window = new Window();
     return m_window->Init();
 }
