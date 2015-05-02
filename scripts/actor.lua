@@ -6,6 +6,10 @@ function create()
     print("In create")
 end
 
+function add(a, b)
+    return a+b
+end
+
 --called every tick (frame yeah)
 --return:
 -- 0 or nil - continue runnig actor

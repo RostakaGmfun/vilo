@@ -87,10 +87,13 @@ bool OS::Configure() {
 bool OS::InitWindow() {
     LuaState* st = new LuaState("scripts/actor.lua");
     st->Init();
-    st->PushParams(10, 3.14, "string:p");
-    Log("%s\n",st->Pop<const char*>());
-    Log("%f\n",st->Pop<double>());
-    Log("%i\n",st->Pop<int>());
+    st->DoFile();
+   // st->PushParams(10, 3.14, "string:p");
+    //Log("%s\n",st->Pop<const char*>());
+    //Log("%f\n",st->Pop<double>());
+    //Log("%i\n",st->Pop<int>());
+    int ret = st->Call<int>("add", 2, 3);
+    Log("%i\n", ret);
     m_window = new Window();
     return m_window->Init();
 }

@@ -19,6 +19,21 @@ public:
     bool DoFile(std::string srcFile="");
     void DoString(const char* str);
 
+    template<typename Ret, typename ... Args>
+    Ret Call(const char* funcName, Args ... args ) {
+        v_ASSERT(m_state);
+        lua_getglobal(m_state, funcName);
+    
+         if(!lua_isfunction(m_state, lua_gettop(m_state))) {
+            OS::get()->Log("[LuaState::Call()]: function \"%s\" "
+                           "not declared!\n",funcName);
+            return (Ret)0;
+    }
+        PushParams(args...);
+        lua_call(m_state, sizeof...(args), 1); 
+        return Get<Ret>();
+    }
+
     //low level stack manipulations
     /*template<typename T> 
     void Push(T val) {
@@ -27,29 +42,25 @@ public:
 
     //template<>
     void Push(int val) {
-        if(!m_state)
-            return;
+        v_ASSERT(m_state);
         lua_pushinteger(m_state, val);
     }
 
     //template<>
     void Push(double val) {
-        if(!m_state)
-            return;
+        v_ASSERT(m_state);
         lua_pushnumber(m_state,val);
     }
 
     //template<>
     void Push(std::string val) {
-        if(!m_state)
-            return;
+        v_ASSERT(m_state);
         lua_pushstring(m_state,val.c_str());
     }
 
     //template<>
     void Push(const char* val) {
-        if(!m_state)
-            return;
+        v_ASSERT(m_state);
         lua_pushstring(m_state, val);
     }
     
@@ -71,26 +82,18 @@ public:
     }
     
     void SetVar(const char* varName, int val) {
-        if(!m_state)
-            return;
         lua_pushinteger(m_state, val);
         lua_setglobal(m_state, varName);
-        return;
     }
     
     void SetVar(const char* varName, double val) {
-        if(!m_state)
-            return;
         lua_pushnumber(m_state, val);
         lua_setglobal(m_state, varName);
     }
 
     void SetVar(const char* varName, const char* val) {
-        if(!m_state)
-            return;
         lua_pushstring(m_state, val);
         lua_setglobal(m_state, varName);
-
     }
 
     /*template<typename T>
@@ -110,12 +113,14 @@ public:
 
     template<typename T>
     inline void PushParams(T v) {
+        v_ASSERT(m_state);
         Push(v);
     }
 
     template<typename T, typename ... Args>
     inline void PushParams(T v, Args ... args) {
-        if(typeid(v)==typeid(int)) {
+        v_ASSERT(m_state);
+        /*if(typeid(v)==typeid(int)) {
             //Push(v);
             //lua_pushinteger(m_state, v);
             //OS::get()->Log("%i\n",v);
@@ -128,7 +133,7 @@ public:
         if(typeid(v)==typeid(const char*)) {
             //lua_pushstring(m_state, v);
             //OS::get()->Log("string %s\n",v);
-        }
+        }*/
     //    OS::get()->Log("ddd\n");
         Push((T)v);
 //        OS::get()->Log("asd\n");
