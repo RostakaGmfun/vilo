@@ -16,7 +16,7 @@ struct EnvVar {
     char *name;
     VarType type;
     union {
-        char *strVal;
+        const char *strVal;
         int intVal;
         double dblVal;
     };
