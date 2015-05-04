@@ -1,6 +1,7 @@
 #include <LuaState.hpp>
 #include <OS.hpp>
 #include <Assert.hpp>
+//#include <lua5.2/lua.hpp>
 
 LuaState::LuaState(): m_state(nullptr)
 {}
@@ -50,7 +51,10 @@ void LuaState::DoString(const char* str) {
     luaL_dostring(m_state, str);
 }
 
-
+void  LuaState::RegisterFunc(LuaFunction func, const char* funcName) {
+    v_ASSERT(m_state);
+    lua_register(m_state, funcName, func); 
+}
 
 
 

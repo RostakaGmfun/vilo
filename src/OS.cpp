@@ -84,22 +84,29 @@ bool OS::Configure() {
     return ConfigSystem::get()->Init(vars, 2);
 }
 
+int hello(lua_State* state) {
+    v_ASSERT(state);
+    OS::get()->Log("hello() from C++!\n");
+    return 0;
+}
+
 bool OS::InitWindow() {
     LuaState* st = new LuaState("scripts/actor.lua");
     st->Init();
     st->DoFile();
-   // st->PushParams(10, 3.14, "string:p");
-    //Log("%s\n",st->Pop<const char*>());
-    //Log("%f\n",st->Pop<double>());
-    //Log("%i\n",st->Pop<int>());
     int ret = st->Call<int>("add", 2, 3);
     Log("%i\n", ret);
+    st->Call<void>("greeting", "Rost", 17 );
+    st->RegisterFunc(hello, "hello");
+    st->Call<void>("create");
     m_window = new Window();
     return m_window->Init();
 }
 
-void OS::Hello() {
+int OS::Hello(lua_State* state) {
+    v_ASSERT(state);
     OS::Log("Hello from lua\n");
+    return 0;
 }
 
 

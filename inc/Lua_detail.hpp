@@ -1,9 +1,9 @@
 #ifndef LUA_DETAIL
 #define LUA_DETAIL
-#include <lua5.2/lua.hpp>
 #include <typeinfo>
 #include <OS.hpp>
 #include <Assert.hpp>
+#include <lua5.2/lua.hpp>
 namespace Lua_detail {
 
     template<typename T> 
@@ -46,6 +46,10 @@ namespace Lua_detail {
     inline int stack_Get(lua_State* state) {
         v_ASSERT(state);
         return lua_tointeger(state, lua_gettop(state));
+    }
+    
+    template<>
+    inline void stack_Get(lua_State* state) {
     }
 
     template<>
@@ -122,45 +126,7 @@ namespace Lua_detail {
         v_ASSERT(state);
         lua_pushstring(state, val);
         lua_setglobal(state, varName);
-
     }
-
-    template<typename T>
-    inline T push_Params(lua_State* state, T v) {
-        v_ASSERT(state);
-        return v;
-    }
-
-    template<typename T, typename ... Args>
-    inline T push_Params(lua_State* state, T v, Args ... args) {
-        v_ASSERT(state);
-        //OS::get()->Log("before\n");
-        //this->m_state = NULL;
-        //OS::get()->Log("after\n");
-        if(typeid(v)==typeid(int)) {
-            //Push(v);
-            lua_pushinteger(state, v);
-           // OS::get()->Log("%i\n",v);
-        }
-        if(typeid(v)==typeid(double)) {
-            //Push(v);
-            lua_pushnumber(state, v);
-            //OS::get()->Log("%f\n",v);
-        }
-        /*if(typeid(v)==typeid(std::string)) {
-            lua_pushstring(m_state, v.c_str());
-            OS::get()->Log("%s\n", v.c_str());
-        }*/
-        if(typeid(v)==typeid(const char*)) {
-            //lua_pushstring(m_state, v);
-            //OS::get()->Log("%s\n",v);
-        }
-    //    OS::get()->Log("ddd\n");
-  //      Push(v);
-        OS::get()->Log("asd\n");
-//        push_Params(state, args...);
-}
-
 }
 
 #endif //LUA_DETAIL

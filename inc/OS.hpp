@@ -5,6 +5,7 @@
 
 class LuaState;
 class Window;
+struct lua_State;
 
 class OS {
 public:
@@ -17,7 +18,7 @@ public:
     int Run(); // return 0 to exit and 1 to restart
     void Cleanup();
     void Log(const char* format, ...);
-    void Hello();
+    int Hello(lua_State*);
     void RegisterAPI(LuaState *state);
     //static LuaState *globalState;
 private:

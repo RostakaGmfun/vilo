@@ -4,10 +4,15 @@
 --return: nothing
 function create()
     print("In create")
+    hello();
 end
 
 function add(a, b)
     return a+b
+end
+
+function greeting(name, age)
+    print("Hello, "..name..". I guess you're "..age.." years old!" )
 end
 
 --called every tick (frame yeah)
