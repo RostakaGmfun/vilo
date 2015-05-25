@@ -41,14 +41,14 @@ void Window::ReadConfig() {
 
 int Window::EventLoop() {
     if(!m_window) return 0;
-    int quit = 1;
+    m_quit = 1;
     SDL_Event e;
 
-   // while(!quit) {
+    while(m_quit) {
         while(SDL_PollEvent(&e)!=0) {
             switch(e.type) {
             case SDL_QUIT:
-                quit = 0;
+                m_quit = 0;
             break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
@@ -62,11 +62,12 @@ int Window::EventLoop() {
             break;
             }
         }
-    //}
+    }
     // Quit();
-    return quit;
+    return m_quit;
 }
 
 void Window::Quit() {
+    m_quit = 0;
     SDL_Quit();
 }

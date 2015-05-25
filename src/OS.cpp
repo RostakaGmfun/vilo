@@ -11,6 +11,7 @@
 #include <EventListener.hpp>
 #include <Actor.hpp>
 #include <TaskManager.hpp>
+#include <LuaClass.hpp>
 
 //will write dumb event sniffer which listens to all events, later will move it somwhere else...
 
@@ -44,7 +45,7 @@ void OS::Log(const char* format, ...) {
 
 int OS::Run() {
     if(!m_window)
-        return 1;
+        return 1; 
     m_retflag = 0;
     while(true) {
         if(!m_window->EventLoop())
@@ -90,16 +91,17 @@ int hello(lua_State* state) {
     return 0;
 }
 
+
 bool OS::InitWindow() {
-    LuaState* st = new LuaState("scripts/actor.lua");
+    st = new LuaState("scripts/actor.lua");
     st->Init();
     st->DoFile();
     int ret = st->Call<int>("add", 2, 3);
     Log("%i\n", ret);
     st->Call<void>("greeting", "Rost", 17 );
     st->RegisterFunc(hello, "hello");
-    st->Call<void>("create");
     m_window = new Window();
+    st->Call<void>("create");
     return m_window->Init();
 }
 
@@ -110,4 +112,3 @@ int OS::Hello(lua_State* state) {
 }
 
 
-//#include <api/OS.api>

@@ -1,7 +1,8 @@
 CC=g++
 SOURCES= src/OS.cpp src/Window.cpp src/ConfigSystem.cpp  \
     src/InputManager.cpp src/TaskManager.cpp src/EventManager.cpp \
-    src/Actor.cpp src/LuaState.cpp
+    src/Actor.cpp src/LuaState.cpp src/LuaStateMgr.cpp
+LUAWRAP= src/LuaWrap/api.cpp src/LuaWrap/OS.api.cpp src/LuaWrap/Window.api.cpp
 CCFLAGS= -I./inc/ -std=c++11 -g
 LDFLAGS= -lSDL2 -llua5.2
 DEPS=inc/OS.hpp inc/Window.hpp inc/ConfigSystem.hpp inc/LuaState.hpp \
@@ -9,7 +10,7 @@ DEPS=inc/OS.hpp inc/Window.hpp inc/ConfigSystem.hpp inc/LuaState.hpp \
      inc/Task.hpp inc/Actor.hpp inc/LuaState.hpp
 LIB=bin/libvilo.a
 OUT=bin/test
-OBJ=$(SOURCES:.cpp=.o)
+OBJ=$(SOURCES:.cpp=.o) $(LUAWRAP:.cpp=.o)
 
 test: main.cpp lib ;$(CC) $(CCFLAGS) $(LDFLAGS)  main.cpp -o $(OUT) $(LIB)
 lib: $(DEPS) $(OBJ) $(LDFLAGS) ;rm $(LIB); ar -q $(LIB) $(OBJ); ar -s $(LIB)

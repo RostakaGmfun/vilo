@@ -1,7 +1,6 @@
 #ifndef OS_HPP
 #define OS_HPP
 
-//#include <LuaAPI.hpp>
 
 class LuaState;
 class Window;
@@ -20,6 +19,7 @@ public:
     void Log(const char* format, ...);
     int Hello(lua_State*);
     void RegisterAPI(LuaState *state);
+    Window* GetCurrentWindow() const { return m_window; }
     //static LuaState *globalState;
 private:
     OS(): m_window(nullptr), m_retflag(0) {}
@@ -29,6 +29,7 @@ private:
 private:
     Window* m_window;
     int m_retflag;
+    LuaState* st;
 };
 
 

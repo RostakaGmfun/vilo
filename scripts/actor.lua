@@ -2,9 +2,14 @@
 
 --called on actor creation
 --return: nothing
+
+
 function create()
     print("In create")
-    hello();
+    hello()
+    OS:Hello()
+    Window:Quit()
+--    paramtest(10, "asd", 3.14);
 end
 
 function add(a, b)

@@ -1,6 +1,7 @@
 #include <LuaState.hpp>
 #include <OS.hpp>
 #include <Assert.hpp>
+#include <LuaWrap/api.hpp>
 //#include <lua5.2/lua.hpp>
 
 LuaState::LuaState(): m_state(nullptr)
@@ -20,6 +21,14 @@ bool LuaState::Init() {
     m_state = luaL_newstate();
     v_ASSERT(m_state);
     luaL_openlibs(m_state);
+    LoadModules();
+    return true;
+}
+
+bool LuaState::LoadModules() {
+    if(!m_state)
+        return false;
+    RegisterModules(m_state);
     return true;
 }
 
@@ -33,13 +42,13 @@ bool LuaState::DoFile(std::string srcFile) {
     if(!srcFile.empty()) {
         m_srcFile = srcFile;
         if(m_srcFile.empty()) {
-            OS::get()->Log("[LuaState::DoFile()] No file given");
+            OS::get()->Log("[LuaState::DoFile()] No file given\n");
             return false;
         }
     }
     
     if(luaL_dofile(m_state, m_srcFile.c_str())) {
-        OS::get()->Log("[LuaState::DoFile(\"%s\")] failed with error: \"%s\"",
+        OS::get()->Log("[LuaState::DoFile(\"%s\")] failed with error: \"%s\"\n",
                        m_srcFile.c_str(), Get<const char*>());
         return false;
     }

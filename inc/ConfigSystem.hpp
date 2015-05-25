@@ -13,7 +13,7 @@ enum VarType {
 };
 
 struct EnvVar {
-    char *name;
+    const char *name;
     VarType type;
     union {
         const char *strVal;

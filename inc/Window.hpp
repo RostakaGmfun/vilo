@@ -20,6 +20,7 @@ private:
     int m_width;
     int m_height;
     bool m_fullscreen;
+    int m_quit;
 };
 
 #endif //WINDOW_HPP

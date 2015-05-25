@@ -18,6 +18,7 @@ public:
   
     bool Init();
     void Cleanup();
+    lua_State* GetState() const { return m_state; }
 
     //execution
     bool DoFile(std::string srcFile="");
@@ -51,6 +52,8 @@ public:
         lua_call(m_state,0, 1); 
         return Get<Ret>();
     }
+
+     
     void RegisterFunc(LuaFunction func, const char* funcName);
 
     //stack manipulation
@@ -118,6 +121,9 @@ public:
         Push((T)v);
         PushParams(args...);
     }
+
+private:
+    bool LoadModules();
 
 private:
     lua_State* m_state;
