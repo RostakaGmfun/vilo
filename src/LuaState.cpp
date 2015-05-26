@@ -2,7 +2,16 @@
 #include <OS.hpp>
 #include <Assert.hpp>
 #include <LuaWrap/api.hpp>
-//#include <lua5.2/lua.hpp>
+
+static const char* loadenv_src = 
+
+"function loadEnv(file)\n"
+"    local newenv = {}\n"
+"    setmetatable(newenv, { __index=_G })\n"
+"    loadfile(file, \"bt\", newenv)()\n"
+"    return newenv\n"
+"end\n"
+;
 
 LuaState::LuaState(): m_state(nullptr)
 {}
@@ -21,6 +30,7 @@ bool LuaState::Init() {
     m_state = luaL_newstate();
     v_ASSERT(m_state);
     luaL_openlibs(m_state);
+    DoString(loadenv_src);
     LoadModules();
     return true;
 }
@@ -28,7 +38,10 @@ bool LuaState::Init() {
 bool LuaState::LoadModules() {
     if(!m_state)
         return false;
+    lua_newtable(m_state);
+    lua_setglobal(m_state, "vilo");
     RegisterModules(m_state);
+    v_ASSERT(lua_istable(m_state, -1));
     return true;
 }
 
@@ -57,7 +70,10 @@ bool LuaState::DoFile(std::string srcFile) {
 
 void LuaState::DoString(const char* str) {
     v_ASSERT(m_state);
-    luaL_dostring(m_state, str);
+    if(luaL_dostring(m_state, str)) {
+        OS::get()->Log("[LuaState::DoString()] failed with error \"%s\"\n", 
+                Get<const char*>());
+    }
 }
 
 void  LuaState::RegisterFunc(LuaFunction func, const char* funcName) {

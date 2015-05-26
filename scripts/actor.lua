@@ -7,8 +7,8 @@
 function create()
     print("In create")
     hello()
-    OS:Hello()
-    Window:Quit()
+    vilo.OS.Hello()
+    vilo.Window.Quit();
 --    paramtest(10, "asd", 3.14);
 end
 
