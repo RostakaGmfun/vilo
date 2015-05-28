@@ -44,7 +44,6 @@ int Window::EventLoop() {
     m_quit = 1;
     SDL_Event e;
 
-    while(m_quit) {
         while(SDL_PollEvent(&e)!=0) {
             switch(e.type) {
             case SDL_QUIT:
@@ -62,7 +61,6 @@ int Window::EventLoop() {
             break;
             }
         }
-    }
     // Quit();
     return m_quit;
 }
