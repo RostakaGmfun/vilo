@@ -3,7 +3,7 @@ SOURCES= src/OS.cpp src/Window.cpp src/ConfigSystem.cpp  \
     src/InputManager.cpp src/TaskManager.cpp src/EventManager.cpp \
     src/Actor.cpp src/LuaState.cpp src/LuaStateMgr.cpp
 LUAWRAP= src/LuaWrap/api.cpp src/LuaWrap/OS.api.cpp src/LuaWrap/Window.api.cpp
-CCFLAGS= -I./inc/ -std=c++11 -g
+CCFLAGS= -I./inc/ -std=c++11
 LDFLAGS= -lSDL2 -llua5.2
 DEPS=inc/OS.hpp inc/Window.hpp inc/ConfigSystem.hpp inc/LuaState.hpp \
      inc/InputManager.hpp inc/TaskManager.hpp inc/Event.hpp inc/EventManager.hpp \

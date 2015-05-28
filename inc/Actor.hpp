@@ -3,12 +3,13 @@
 
 #include <Task.hpp>
 #include <EventListener.hpp>
+#include <Node.hpp>
 
 #include <string>
 
 class LuaState;
 
-class Actor: public Task, public EventListener {
+class Actor: public Node, public Task, public EventListener {
 public:
     Actor(std::string luaSrcPath, std::string name, int evtMask);
     virtual bool Init();

@@ -41,7 +41,6 @@ bool LuaState::LoadModules() {
     lua_newtable(m_state);
     lua_setglobal(m_state, "vilo");
     RegisterModules(m_state);
-    v_ASSERT(lua_istable(m_state, -1));
     return true;
 }
 
