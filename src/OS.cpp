@@ -12,8 +12,8 @@
 #include <Actor.hpp>
 #include <TaskManager.hpp>
 #include <LuaClass.hpp>
-
-//will write dumb event sniffer which listens to all events, later will move it somwhere else...
+#include <Game.hpp>
+#include <FSManager.hpp>
 
 class EventSniffer: public EventListener {
 public:
@@ -26,12 +26,18 @@ public:
 };
 
 int OS::Init() {
+    FSManager::get()->SetPath("./");   
+
     if(!Configure())
         return 1;
+    
     if(!InitWindow())
         return 1;
-    Actor *a = new Actor("scripts/actor.lua", "MyLittleActor", EVT_INPUT);
-    TaskManager::get()->AddTask(a);
+
+    if(!LoadGame())
+        return 1;
+
+//    Actor *a = new Actor("scripts/actor.lua", "MyLittleActor", EVT_INPUT);
  
     return 0;
 }
@@ -51,6 +57,8 @@ int OS::Run() {
         if(!m_window->EventLoop())
             break;
         TaskManager::get()->Update();
+        v_ASSERT(m_game);
+        m_game->Update();
     }
     return m_retflag;
 }
@@ -60,18 +68,6 @@ void OS::Cleanup() {
         m_window->Quit();
 }
 
-/*void OS::InitSystems() {
-    LuaState* st = ConfigSystem::get()->GetLuaState("config.lua");
-    std::vector<Argument> args;
-    args.push_back(2);
-    args.push_back(3);
-    Argument ret = st->PCall("test",args);
-    Log("Result: %i\n",ret.intVal); 
-    Actor *a = new Actor("scripts/actor.luac", "MyLittleActor");
-    TaskManager::get()->AddTask(a);
-    EventSniffer *sniffer = new EventSniffer();
-    EventManager::get()->AddListener(sniffer);
-}*/
 
 bool OS::Configure() {
     ConfigSystem::get()->AddConfigFile(MAIN_CFG);
@@ -111,4 +107,9 @@ int OS::Hello(lua_State* state) {
     return 0;
 }
 
-
+bool OS::LoadGame() {
+    if(m_game)
+        return true;
+    m_game = new Game();
+    return m_game->Init();
+}

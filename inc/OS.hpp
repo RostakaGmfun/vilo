@@ -1,7 +1,7 @@
 #ifndef OS_HPP
 #define OS_HPP
 
-
+class Game;
 class LuaState;
 class Window;
 struct lua_State;
@@ -12,7 +12,6 @@ public:
         static OS instance;
         return &instance;
     }
-    //LuaState* GetGState() const { return globalState; }
     int Init(); //returns 0 on success and nonzero on failure
     int Run(); // return 0 to exit and 1 to restart
     void Cleanup();
@@ -20,16 +19,16 @@ public:
     int Hello(lua_State*);
     void RegisterAPI(LuaState *state);
     Window* GetCurrentWindow() const { return m_window; }
-    //static LuaState *globalState;
 private:
-    OS(): m_window(nullptr), m_retflag(0) {}
-    //int InitSystems();
+    OS(): m_window(nullptr), m_retflag(0), m_game(nullptr) {}
     bool Configure();
     bool InitWindow();
+    bool LoadGame();
 private:
     Window* m_window;
     int m_retflag;
     LuaState* st;
+    Game* m_game;
 };
 
 
