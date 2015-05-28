@@ -15,7 +15,7 @@ public:
     void RegisterState(LuaState* state);
     LuaState* GetState(lua_State *state);
 private:
-    LuaStateMgr();
+    LuaStateMgr() {}
 
 private:
     std::map<lua_State*, LuaState*> m_states;
