@@ -48,10 +48,17 @@ bool Game::LoadMainScene() {
             compiled = true;
         }
     }
+
+    bool error;
     if(compiled)
-        m_lua->DoFile("scenes/Main.luac");
+        error = m_lua->DoFile("scenes/Main.luac");
     else
-        m_lua->DoFile("scenes/Main.lua");
+        error = m_lua->DoFile("scenes/Main.lua");
+    if(!error)
+        return false;
+
+    m_lua->Call<void>("create");
+
     return true;
 }
 

@@ -10,6 +10,10 @@ Actor::Actor(std::string luaSrcPath, std::string name, int evtMask):
     
 }
 
+void Actor::Hello() {
+    OS::get()->Log("Hello, my name is %s\n", m_name.c_str());
+}
+
 bool Actor::Init() {
     m_luaState = new LuaState(m_luaSrc);
     if(!m_luaState->Init()) {

@@ -5,7 +5,7 @@
 
 static const char* loadenv_src = 
 
-"function loadEnv(file)\n"
+"\nfunction loadenv(file)\n"
 "    local newenv = {}\n"
 "    setmetatable(newenv, { __index=_G })\n"
 "    loadfile(file, \"bt\", newenv)()\n"
@@ -30,7 +30,8 @@ bool LuaState::Init() {
     m_state = luaL_newstate();
     v_ASSERT(m_state);
     luaL_openlibs(m_state);
-    DoString(loadenv_src);
+//    DoString(loadenv_src);
+//    Call<void>("loadenv(\"actors/Actor.lua\")");
     LoadModules();
     return true;
 }

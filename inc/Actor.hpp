@@ -13,7 +13,7 @@ public:
     virtual bool Init();
     virtual int Run();
     virtual void Terminate();
-    
+    void Hello();    
 
     virtual void HandleEvent(Event* evt);
 

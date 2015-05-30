@@ -53,6 +53,34 @@ public:
         return Get<Ret>();
     }
 
+    template<typename Ret, typename ... Args>
+    Ret PCall(const char* funcName, Args ... args) {
+        v_ASSERT(m_state);
+        lua_getglobal(m_state, funcName);
+
+        if(!lua_isfunction(m_state, lua_gettop(m_state))) {
+            OS::get()->Log("[LuaState::Call()]: function \"%s\" "
+                           "not declared!\n",funcName);
+        return (Ret)0;
+    }
+        PushParams(args...);
+        lua_pcall(m_state, sizeof...(args), 1, 0); 
+        return Get<Ret>();
+    }
+
+    template<typename Ret>
+    Ret PCall(const char* funcName) {
+        v_ASSERT(m_state);
+        lua_getglobal(m_state, funcName);
+
+        if(!lua_isfunction(m_state, lua_gettop(m_state))) {
+            OS::get()->Log("[LuaState::Call()]: function \"%s\" "
+                           "not declared!\n",funcName);
+        return (Ret)0;
+    }
+        lua_pcall(m_state,0, 1, 0); 
+        return Get<Ret>();
+    }
      
     void RegisterFunc(LuaFunction func, const char* funcName);
 
