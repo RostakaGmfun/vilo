@@ -91,7 +91,7 @@ int hello(lua_State* state) {
 bool OS::InitWindow() {
     st = new LuaState("scripts/actor.lua");
     st->Init();
-    st->DoFile();
+    st->DoFile("scripts/actor.lua");
     int ret = st->Call<int>("add", 2, 3);
     Log("%i\n", ret);
     st->Call<void>("greeting", "Rost", 17 );

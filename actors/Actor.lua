@@ -1,12 +1,15 @@
+
 health = 100
 name = "Dude"
+
+print "in Actor.lua"
 
 function create()
     print "Actor.create()"
 end
 
 function update(dt)
-    print dt
+    print(dt)
 end
 
 function destroy()
@@ -14,5 +17,6 @@ function destroy()
 end
 
 function sayHello()
-    print "Hello, my name is"..name
+    print ("[Actor.lua]Hello, my name is " .. name)
+    print ("[Actor.lua]My hp is "..health)
 end

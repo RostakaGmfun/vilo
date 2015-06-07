@@ -152,6 +152,7 @@ public:
 
 private:
     bool LoadModules();
+    bool LoadDetail();
 
 private:
     lua_State* m_state;

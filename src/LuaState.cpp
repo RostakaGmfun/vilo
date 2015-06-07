@@ -2,16 +2,7 @@
 #include <OS.hpp>
 #include <Assert.hpp>
 #include <LuaWrap/api.hpp>
-
-static const char* loadenv_src = 
-
-"\nfunction loadenv(file)\n"
-"    local newenv = {}\n"
-"    setmetatable(newenv, { __index=_G })\n"
-"    loadfile(file, \"bt\", newenv)()\n"
-"    return newenv\n"
-"end\n"
-;
+#include <FSManager.hpp>
 
 LuaState::LuaState(): m_state(nullptr)
 {}
@@ -30,9 +21,17 @@ bool LuaState::Init() {
     m_state = luaL_newstate();
     v_ASSERT(m_state);
     luaL_openlibs(m_state);
-//    DoString(loadenv_src);
-//    Call<void>("loadenv(\"actors/Actor.lua\")");
-    LoadModules();
+    
+    if(!LoadDetail()) {
+        OS::get()->Log("[LuaState::Init()] Error loading detail\n");
+        return false;
+    }
+    
+    if(!LoadModules()) {
+        OS::get()->Log("[LuaState::Init()] Error loading modules!\n");
+        return false;
+    }
+
     return true;
 }
 
@@ -42,6 +41,17 @@ bool LuaState::LoadModules() {
     lua_newtable(m_state);
     lua_setglobal(m_state, "vilo");
     RegisterModules(m_state);
+    return true;
+}
+
+bool LuaState::LoadDetail() {
+    if(!m_state)
+        return false;
+    std::string fpath = FSManager::get()->GetPath();
+    fpath+="scripts/";
+    SetVar("_Path", fpath.c_str());
+    if(!DoFile(fpath+"detail/init.lua"))
+        return false;
     return true;
 }
 
