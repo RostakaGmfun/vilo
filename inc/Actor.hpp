@@ -13,7 +13,7 @@ public:
     Actor(LuaState* state, std::string name, int evtMask, Scene* p=nullptr);
     virtual bool Init();
     virtual void Update(float dt);
-    virtual void Terminate();
+    virtual void Destroy();
     void Hello();    
 
     virtual void HandleEvent(Event* evt);

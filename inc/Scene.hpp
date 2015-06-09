@@ -10,7 +10,7 @@ public:
     Scene(LuaState* state, std::string name,int EvtMask, std::string src);
     virtual bool Init();
     virtual void Update(float dt);
-    virtual void Terminate();
+    virtual void Destroy();
 
     void AddActor(Actor* a);
 private:

@@ -22,7 +22,7 @@ void Scene::Update(float dt) {
     }
 }
 
-void Scene::Terminate() {
+void Scene::Destroy() {
     if(!m_state)
         return;
     m_state->Call<void>("destroy");

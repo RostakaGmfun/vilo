@@ -15,12 +15,21 @@ void Actor::Hello() {
 }
 
 bool Actor::Init() {
-    if(!m_state)
-        return false;
-    return true;
+    v_ASSERT(m_state);
+    lua_State* L = m_state->GetState();
+    lua_pushlightuserdata(L, (void*)this);
+    lua_gettable(L, LUA_REGISTRYINDEX);
+    v_ASSERT(lua_istable(L, -1));
+    lua_getfield(L, -1, "create");
+    lua_call(L, 0, 1);
+    if(!lua_isnumber(L, -1))
+        return true;
+    int r = lua_tonumber(L, -1);
+    lua_pop(L, 2);
+    return !r;
 }
 
-void Actor::Update(float dt) {
+void Actor::Update(float dt)  {
     v_ASSERT(m_state);
     lua_State* L = m_state->GetState();
     lua_pushlightuserdata(L, (void*)this);
@@ -29,9 +38,18 @@ void Actor::Update(float dt) {
     lua_getfield(L, -1, "update");
     lua_pushnumber(L, dt);
     lua_call(L, 1, 0);
+    lua_pop(L, 1); //pop something??? - anyway, it fixes stack owerflow bug :)
 }
 
-void Actor::Terminate() {
+void Actor::Destroy() {
+    v_ASSERT(m_state);
+    lua_State* L = m_state->GetState();
+    lua_pushlightuserdata(L, (void*)this);
+    lua_gettable(L, LUA_REGISTRYINDEX);
+    v_ASSERT(lua_istable(L, -1));
+    lua_getfield(L, -1, "destroy");
+    lua_call(L, 0, 0);
+    lua_pop(L, 1);
 }
 
 void Actor::HandleEvent(Event* evt) {

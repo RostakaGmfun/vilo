@@ -8,7 +8,6 @@ function create()
 end
 
 function update(dt)
-    print(dt)
 end
 
 function destroy()
