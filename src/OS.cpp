@@ -57,8 +57,7 @@ int OS::Run() {
         if(!m_window->EventLoop())
             break;
         TaskManager::get()->Update();
-        v_ASSERT(m_game);
-        m_game->Update();
+        Game::get()->Update();
     }
     return m_retflag;
 }
@@ -97,7 +96,6 @@ bool OS::InitWindow() {
     st->Call<void>("greeting", "Rost", 17 );
     st->RegisterFunc(hello, "hello");
     m_window = new Window();
-    st->Call<void>("create");
     return m_window->Init();
 }
 
@@ -108,8 +106,5 @@ int OS::Hello(lua_State* state) {
 }
 
 bool OS::LoadGame() {
-    if(m_game)
-        return true;
-    m_game = new Game();
-    return m_game->Init();
+    return Game::get()->Init();
 }

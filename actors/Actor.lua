@@ -1,8 +1,7 @@
+print "in \"Actor.lua\""
 
 health = 100
 name = "Dude"
-
-print "in Actor.lua"
 
 function create()
     print "Actor.create()"

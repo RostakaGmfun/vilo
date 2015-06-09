@@ -1,7 +1,6 @@
 #ifndef OS_HPP
 #define OS_HPP
 
-class Game;
 class LuaState;
 class Window;
 struct lua_State;
@@ -20,7 +19,7 @@ public:
     void RegisterAPI(LuaState *state);
     Window* GetCurrentWindow() const { return m_window; }
 private:
-    OS(): m_window(nullptr), m_retflag(0), m_game(nullptr) {}
+    OS(): m_window(nullptr), m_retflag(0) {}
     bool Configure();
     bool InitWindow();
     bool LoadGame();
@@ -28,7 +27,6 @@ private:
     Window* m_window;
     int m_retflag;
     LuaState* st;
-    Game* m_game;
 };
 
 

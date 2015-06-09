@@ -6,10 +6,12 @@ function create()
     actor:Hello() 
     actor:sayHello()
     print(actor.health)
+    actor:create()
+    return 0
 end
 
 function update(dt)
-    actor:update(dt)
+
 end
 
 function destroy()

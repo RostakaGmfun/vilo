@@ -2,8 +2,9 @@
 #include <LuaState.hpp>
 #include <LuaStateMgr.hpp>
 #include <FSManager.hpp>
+#include <Scene.hpp>
 
-Game::Game(): m_lua(nullptr)
+Game::Game(): m_lua(nullptr), m_mainScene(nullptr), m_currentScene(nullptr)
 {}
 
 bool Game::Init() {
@@ -19,7 +20,8 @@ bool Game::Init() {
 }
 
 bool Game::Update() {
-
+    v_ASSERT(m_currentScene);
+    m_currentScene->Update(0);
     return true;
 }
 
@@ -40,25 +42,18 @@ bool Game::LoadMainScene() {
     if(!m_lua)
         return false;
     bool compiled = false;
+    std::string src = FSManager::get()->GetPath()+"scenes/Main.lua";
     if(!FSManager::get()->FileExists("scenes/Main.lua")) {
         if(!FSManager::get()->FileExists("scenes/Main.luac")) {
             return false;
         }
         else {
             compiled = true;
+            src = FSManager::get()->GetPath()+"scenes/Main.luac";
         }
     }
 
-    bool error;
-    if(compiled)
-        error = m_lua->DoFile("scenes/Main.luac");
-    else
-        error = m_lua->DoFile("scenes/Main.lua");
-    if(!error)
-        return false;
-
-    m_lua->Call<void>("create");
-
-    return true;
+    m_mainScene = new Scene(m_lua,"Main",  EVT_INPUT,src );
+    m_currentScene = m_mainScene;
+    return m_mainScene->Init();
 }
-
