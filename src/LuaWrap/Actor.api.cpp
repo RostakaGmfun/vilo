@@ -5,6 +5,8 @@
 #include <lua5.2/lauxlib.h>
 #include <FSManager.hpp>
 #include <Actor.hpp>
+#include <Game.hpp>
+#include <Scene.hpp>
 
 #include <string.h>
 
@@ -54,7 +56,7 @@ namespace vilo {
         //setup Actor object as userdata
         lua_pushstring(L, "__object__"); //table "__object__"
         Actor** a = (Actor**)lua_newuserdata(L, sizeof(Actor*)); // table "__object__" usr_data
-        *a = new Actor(ls, name, EVT_INPUT);
+        *a = new Actor(ls, name, EVT_INPUT, Game::get()->CurrentScene());
         lua_settable(L, -3); //table
         
         //load actor methods
@@ -65,7 +67,12 @@ namespace vilo {
 
         luaL_setfuncs(L, methods, 0); //table
         
-        
+        lua_pushlightuserdata(L, (void*)(*a)); //table lightuserdata
+        lua_pushvalue(L, -2); //table lightuserdata table
+        // registryindex[*a]=actor_luatable
+        lua_settable(L, LUA_REGISTRYINDEX); //table
+
+        Game::get()->CurrentScene()->AddActor(*a);
         return 1;
     }
 
