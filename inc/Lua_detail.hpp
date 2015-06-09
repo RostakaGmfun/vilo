@@ -16,6 +16,9 @@ namespace Lua_detail {
     T get_Var(const char* varName, lua_State* state);
 
     template<typename T>
+    T stack_Pop();
+
+    template<typename T>
     void set_Var(const char* varName, T val, lua_State* state);
 
     template<>
@@ -127,6 +130,21 @@ namespace Lua_detail {
         lua_pushstring(state, val);
         lua_setglobal(state, varName);
     }
+
+
+    template<typename T>
+    inline T stack_Pop(lua_State* state) {
+        v_ASSERT(state);
+        T v = Lua_detail::stack_Get<T>(state);
+        lua_pop(state, 1);
+        return v;
+    }
+    
+    template<>
+    inline void stack_Pop(lua_State* state) {
+        return;
+    }
+
 }
 
 #endif //LUA_DETAIL

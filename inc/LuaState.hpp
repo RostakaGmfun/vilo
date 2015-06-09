@@ -35,8 +35,14 @@ public:
         return (Ret)0;
     }
         PushParams(args...);
+        
+        if(typeid(Ret)==typeid(void)) {
+            lua_call(m_state, sizeof...(args), 0);
+            return (Ret)0;
+        }
+
         lua_call(m_state, sizeof...(args), 1); 
-        return Get<Ret>();
+        return Lua_detail::stack_Pop<Ret>(m_state);
     }
 
     template<typename Ret>
@@ -49,8 +55,12 @@ public:
                            "not declared!\n",funcName);
         return (Ret)0;
     }
+        if(typeid(Ret)==typeid(void)) {
+            lua_call(m_state, 0, 0);
+            return (Ret)0;
+        }
         lua_call(m_state,0, 1); 
-        return Get<Ret>();
+        return Lua_detail::stack_Pop<Ret>(m_state);
     }
 
     template<typename Ret, typename ... Args>
@@ -64,8 +74,13 @@ public:
         return (Ret)0;
     }
         PushParams(args...);
+        if(typeid(Ret)==typeid(void)) {
+            lua_pcall(m_state, sizeof...(args), 0, 0);
+            return (Ret)0;
+        }
+
         lua_pcall(m_state, sizeof...(args), 1, 0); 
-        return Get<Ret>();
+        return Lua_detail::stack_Pop<Ret>(m_state);
     }
 
     template<typename Ret>
@@ -78,8 +93,12 @@ public:
                            "not declared!\n",funcName);
         return (Ret)0;
     }
+        if(typeid(Ret)==typeid(void)) {
+            lua_pcall(m_state, 0, 0, 0);
+            return (Ret)0;
+        }
         lua_pcall(m_state,0, 1, 0); 
-        return Get<Ret>();
+        return Lua_detail::stack_Pop<Ret>(m_state);
     }
      
     void RegisterFunc(LuaFunction func, const char* funcName);
@@ -109,14 +128,7 @@ public:
     inline T Get() {
         return Lua_detail::stack_Get<T>(m_state);
     }
-    
-    template<typename T>
-    inline T Pop() {
-        T v = Lua_detail::stack_Get<T>(m_state);
-        lua_pop(m_state, 1);
-        return v;
-    }
-
+   
     template<typename T>
     inline T GetVar(const char* varName) {
         return Lua_detail::get_Var<T>(varName,m_state);
