@@ -46,7 +46,7 @@ namespace vilo {
         std::string name = "unknown";
         if(n>=2)
             name  = luaL_checkstring(L, 2);
-       
+
         lua_getglobal(L, "loadenv");
         lua_pushstring(L, fname.c_str());
         lua_call(L, 1, 1);
@@ -54,7 +54,7 @@ namespace vilo {
         //setup Actor object as userdata
         lua_pushstring(L, "__object__"); //table "__object__"
         Actor** a = (Actor**)lua_newuserdata(L, sizeof(Actor*)); // table "__object__" usr_data
-        *a = new Actor(fname.c_str(), name, EVT_INPUT);
+        *a = new Actor(ls, name, EVT_INPUT);
         lua_settable(L, -3); //table
         
         //load actor methods
