@@ -36,8 +36,6 @@ int OS::Init() {
 
     if(!LoadGame())
         return 1;
-
-//    Actor *a = new Actor("scripts/actor.lua", "MyLittleActor", EVT_INPUT);
  
     return 0;
 }
@@ -69,15 +67,7 @@ void OS::Cleanup() {
 
 
 bool OS::Configure() {
-    ConfigSystem::get()->AddConfigFile(MAIN_CFG);
-    EnvVar* vars = new EnvVar[2];
-    vars[0].type=VAR_T_STR;
-    vars[0].name="Codename";
-    vars[0].strVal="WizleyGrizley";
-    vars[1].type=VAR_T_INT;
-    vars[1].name="testvar";
-    vars[1].intVal=1;
-    return ConfigSystem::get()->Init(vars, 2);
+    return ConfigSystem::get()->Init("vilo.cfg");
 }
 
 int hello(lua_State* state) {
@@ -88,13 +78,6 @@ int hello(lua_State* state) {
 
 
 bool OS::InitWindow() {
-    st = new LuaState("scripts/actor.lua");
-    st->Init();
-    st->DoFile("scripts/actor.lua");
-    int ret = st->Call<int>("add", 2, 3);
-    Log("%i\n", ret);
-    st->Call<void>("greeting", "Rost", 17 );
-    st->RegisterFunc(hello, "hello");
     m_window = new Window();
     return m_window->Init();
 }
@@ -108,3 +91,4 @@ int OS::Hello(lua_State* state) {
 bool OS::LoadGame() {
     return Game::get()->Init();
 }
+

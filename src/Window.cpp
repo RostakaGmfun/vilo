@@ -4,6 +4,7 @@
 #include <ConfigSystem.hpp>
 #include <ConfigVars.hpp>
 #include <InputManager.hpp>
+#include <FSManager.hpp>
 
 Window::Window(): m_window(NULL) {
 
@@ -26,17 +27,17 @@ bool Window::Init() {
 
 void Window::ReadConfig() {
     //TODO add config.lua existance check
-    std::string title = ConfigSystem::get()->GetString(MAIN_CFG, WIN_TITLE);
+    std::string title = ConfigSystem::get()->GetString(WIN_TITLE);
     m_title = new char[title.size()+1];
     std::copy(title.begin(), title.end(), m_title);
     m_title[title.size()] = '\0';
-    m_width = ConfigSystem::get()->GetInt(MAIN_CFG, WIN_WIDTH);
+    m_width = ConfigSystem::get()->GetInt(WIN_WIDTH);
     if(m_width<=0)
         m_width = 640;
-    m_height = ConfigSystem::get()->GetInt(MAIN_CFG, WIN_HEIGHT);
+    m_height = ConfigSystem::get()->GetInt(WIN_HEIGHT);
     if(m_height<=0)
         m_height = 480;
-    m_fullscreen = ConfigSystem::get()->GetInt(MAIN_CFG, WIN_FULLSCREEN);
+    m_fullscreen = ConfigSystem::get()->GetInt(WIN_FULLSCREEN);
 }
 
 int Window::EventLoop() {

@@ -1,26 +1,7 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 #include <string>
-#include <vector>
 #include <map>
-
-class LuaState;
-
-enum VarType {
-    VAR_T_STR,
-    VAR_T_INT,
-    VAR_T_DBL
-};
-
-struct EnvVar {
-    const char *name;
-    VarType type;
-    union {
-        const char *strVal;
-        int intVal;
-        double dblVal;
-    };
-};
 
 class ConfigSystem {
 public:
@@ -29,18 +10,15 @@ public:
         return &instance;
     }
 
-    void AddConfigFile(std::string fname);
-    bool Init(EnvVar* vars, int numVars);
-    int GetInt(std::string config, std::string name);
-    std::string GetString(std::string config, std::string name);
+    bool Init(std::string cfgFname);
+    int GetInt(std::string name);
+    std::string GetString(std::string name);
 
-    LuaState* GetLuaState(std::string configName);
 private:
     ConfigSystem(){}
-    void SetupEnvironment(EnvVar *vars, int numVars);
 private:
-    std::vector<std::string> m_configs;
-    std::map<std::string,LuaState*> m_states;
+    std::string m_cfgFname;
+    std::map<std::string,std::string> m_configs;
 };
 
 #endif //CONFIG_HPP

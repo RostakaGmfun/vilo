@@ -1,71 +1,69 @@
 #include <ConfigSystem.hpp>
 #include <OS.hpp>
-#include <LuaState.hpp>
+#include <FSManager.hpp>
+#include <vector>
+#include <sstream>
+#include <algorithm>
 
-void ConfigSystem::AddConfigFile(std::string fname) {
-    m_configs.push_back(fname);
-}
-
-bool ConfigSystem::Init(EnvVar *vars, int numVars) {    
-    for(int i = 0;i<m_configs.size();i++) {
-        m_states[m_configs[i]] = new LuaState(m_configs[i]);
-        if(!m_states[m_configs[i]]->Init()) {
-            OS::get()->Log("[ConfigSystem::Init()] Error initialising LuaState\n");
-            return false;
-        }
+bool ConfigSystem::Init(std::string cfgFname) {
+    if(!FSManager::get()->FileExists(cfgFname)) {
+        OS::get()->Log("[ConfigSystem::Init] config file %s does not exist\n",
+                       cfgFname.c_str());
+        return false;
     }
-    SetupEnvironment(vars, numVars);
-    for(int i = 0;i<m_configs.size();i++) {
-        if(!m_states[m_configs[i]]->DoFile(m_configs[i])) {
-            OS::get()->Log("[ConfigSystem::Init()] error occured while procesing:"
-            " %s\n", m_configs[i].c_str());
+    
+    const char* cfg = new char[FSManager::get()->GetFileSize(cfgFname)];
+    if(FSManager::get()->ReadFile(cfgFname, (void*)cfg)<=0) {
+        OS::get()->Log("[ConfigSystem::Init()] Error reading config file: %s\n", cfgFname.c_str());
+        return false;
+    }
+    std::stringstream input(cfg);
+    std::vector<std::string> lines;
+    for(std::string line;std::getline(input,line, '\n'); lines.push_back(line)) {
+    }
+
+    for(auto i = lines.begin();i!=lines.end();i++) {
+        input.clear();
+        input.str(*i);
+        std::string name, val;
+        std::getline(input, name, '=');
+        std::getline(input, val, '\n');
+        if(name.empty()||val.empty())
+            continue;
+
+        name.erase(std::remove_if( name.begin(), name.end(), 
+        [](char c){ return (c =='\r' || c =='\t' || c == ' ' || c == '\n');}), 
+                name.end() );
+
+        input.clear();
+        input.str(val);
+
+        if(val.find("\"")!=std::string::npos) {
+            std::string tmp;
+            std::getline(input, tmp, '"');
+            std::getline(input, val, '"');
         }
+        else
+            val.erase(std::remove_if( val.begin(), val.end(), 
+                [](char c){ return (c =='\r' || c =='\t' || c == ' ' || c == '\n');}), 
+                    val.end() );
+
+        OS::get()->Log("\"%s\"\n", val.c_str());
+        m_configs[name] = val;
     }
     return true;
 }
 
-void ConfigSystem::SetupEnvironment(EnvVar *vars, int numVars) {
-    if(!vars)
-        return;
-    for(auto i = m_states.begin();i!=m_states.end();i++) {
-        for(int j = 0;j<numVars;j++) {
-            switch(vars[j].type) {
-            case VAR_T_STR:
-                OS::get()->Log("[ConfigSystem] Setting env var: %s=%s\n",vars[j].name,vars[j].strVal);
-                i->second->SetVar(vars[j].name, vars[j].strVal);
-            break;
-            case VAR_T_INT:
-                OS::get()->Log("[ConfigSystem] Setting env var: %s=%i\n", vars[j].name, vars[j].intVal);
-                i->second->SetVar(vars[j].name, vars[j].intVal);
-            break;
-            case VAR_T_DBL:
-                
-            break;
-            }
-        }
+int ConfigSystem::GetInt(std::string name) {
+    if( m_configs.find(name)!=m_configs.end()) {
+        return std::stoi(m_configs[name]);
     }
+    return 0;
 }
 
-int ConfigSystem::GetInt(std::string config, std::string name) {
-   for(auto i = m_states.begin(); i!=m_states.end();i++) {
-        if(i->first==config)
-            return i->second->GetVar<int>(name.c_str());
-   }
-   return 0;
-}
-
-std::string ConfigSystem::GetString(std::string config, std::string name) {
-    for(auto i = m_states.begin(); i!=m_states.end();i++) {
-        if(i->first==config)
-            return i->second->GetVar<std::string>(name.c_str());
+std::string ConfigSystem::GetString(std::string name) {
+    if( m_configs.find(name)!=m_configs.end()) {
+        return m_configs[name];
     }
     return "";
-}
-
-LuaState* ConfigSystem::GetLuaState(std::string configName) {
-    for(auto i = m_states.begin(); i!=m_states.end();i++) {
-        if(i->first==configName)
-            return i->second;
-    }
-    return NULL;
 }
