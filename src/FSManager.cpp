@@ -24,7 +24,7 @@ int FSManager::GetFileSize(std::string fname) {
 int FSManager::ReadFile(std::string fname, void* buf) {
     if(!buf)
         return -1;
-    if(FILE* f = fopen(fname.append(m_path).c_str(), "r")) {
+    if(FILE* f = fopen(std::string(m_path+fname).c_str(), "r")) {
         fseek(f, 0, SEEK_END);
         int sz = ftell(f);
         fseek(f, 0, SEEK_SET);
