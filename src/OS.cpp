@@ -67,7 +67,7 @@ void OS::Cleanup() {
 
 
 bool OS::Configure() {
-    return ConfigSystem::get()->Init("vilo.cfg");
+    return ConfigSystem::get()->Init(MAIN_CFG);
 }
 
 int hello(lua_State* state) {
