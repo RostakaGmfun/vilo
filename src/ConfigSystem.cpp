@@ -32,7 +32,7 @@ bool ConfigSystem::Init(std::string cfgFname) {
             continue;
 
         name.erase(std::remove_if( name.begin(), name.end(), 
-        [](char c){ return (c =='\r' || c =='\t' || c == ' ' || c == '\n');}), 
+        [](char c){ return (c =='\t' || c == ' ');}), 
                 name.end() );
 
         input.clear();
@@ -45,10 +45,9 @@ bool ConfigSystem::Init(std::string cfgFname) {
         }
         else
             val.erase(std::remove_if( val.begin(), val.end(), 
-                [](char c){ return (c =='\r' || c =='\t' || c == ' ' || c == '\n');}), 
+                [](char c){ return (c =='\t' || c == ' ');}), 
                     val.end() );
 
-        OS::get()->Log("\"%s\"\n", val.c_str());
         m_configs[name] = val;
     }
     return true;

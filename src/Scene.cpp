@@ -6,10 +6,11 @@ Scene::Scene(LuaState* state, std::string name, int EvtMask, std::string src):
 {}
 
 bool Scene::Init() {
-    if(!m_state)
+    v_ASSERT(m_state);
+    if(!m_state->DoFile(m_src)) {
+        OS::get()->Log("[Scene::Init] Error running scene script!\n");
         return false;
-    if(!m_state->DoFile(m_src))
-        return false;
+    }
     return !m_state->PCall<int>("create");
 }
 

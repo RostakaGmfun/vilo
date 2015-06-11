@@ -45,6 +45,7 @@ bool Game::LoadMainScene() {
     std::string src = FSManager::get()->GetPath()+"scenes/Main.lua";
     if(!FSManager::get()->FileExists("scenes/Main.lua")) {
         if(!FSManager::get()->FileExists("scenes/Main.luac")) {
+            OS::get()->Log("[Game::LoadMainScene()] Main scene script not found\n");
             return false;
         }
         else {
