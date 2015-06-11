@@ -19,9 +19,9 @@ bool Game::Init() {
     return true;
 }
 
-bool Game::Update() {
+bool Game::Update(float dt) {
     v_ASSERT(m_currentScene);
-    m_currentScene->Update(0);
+    m_currentScene->Update(dt);
     return true;
 }
 

@@ -1,6 +1,7 @@
 #include <OS.hpp>
 #include <stdarg.h>
 #include <stdio.h>
+#include <SDL2/SDL.h>
 
 #include <Window.hpp>
 #include <ConfigSystem.hpp>
@@ -36,6 +37,7 @@ int OS::Init() {
     if(!LoadGame())
         return 1;
  
+    m_startTime = SDL_GetTicks();
     return 0;
 }
 
@@ -54,7 +56,10 @@ int OS::Run() {
         if(!m_window->EventLoop())
             break;
         TaskManager::get()->Update();
-        Game::get()->Update();
+        Uint32 thisTime = SDL_GetTicks();
+        float dt = thisTime-m_startTime;
+        Game::get()->Update(dt);
+        m_startTime  = thisTime;
     }
     return m_retflag;
 }

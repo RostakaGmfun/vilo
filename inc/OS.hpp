@@ -27,6 +27,7 @@ private:
     Window* m_window;
     int m_retflag;
     LuaState* st;
+    unsigned int m_startTime;
 };
 
 

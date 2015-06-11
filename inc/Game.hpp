@@ -14,7 +14,7 @@ public:
     }
 
     bool Init();
-    bool Update();
+    bool Update(float dt);
     void Destroy();
     Scene* CurrentScene() const { return m_currentScene; }
 private:
