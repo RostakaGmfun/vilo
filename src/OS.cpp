@@ -11,7 +11,6 @@
 #include <EventListener.hpp>
 #include <Actor.hpp>
 #include <TaskManager.hpp>
-#include <LuaClass.hpp>
 #include <Game.hpp>
 #include <FSManager.hpp>
 

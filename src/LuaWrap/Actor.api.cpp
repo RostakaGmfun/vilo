@@ -82,6 +82,7 @@ namespace vilo {
         lua_settable(L, LUA_REGISTRYINDEX); //table
 
         Game::get()->CurrentScene()->AddActor(*a);
+        (*a)->Init();
         return 1;
     }
 
