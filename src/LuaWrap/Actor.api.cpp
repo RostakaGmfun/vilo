@@ -36,7 +36,6 @@ namespace vilo {
     }
 
     int Actor_New(lua_State* L) {
-        OS::get()->Log("Actor.New()\n");
         LuaState* ls = LuaStateMgr::get()->GetState(L);
         if(!ls)
             return 0;
@@ -44,11 +43,21 @@ namespace vilo {
         int n = lua_gettop(L);
         if(n<1)
             return luaL_error(L, "[vilo.Actor.New()] Expected arguments");
-        std::string fname = FSManager::get()->GetPath()+std::string("actors/")+luaL_checkstring(L, 1);
+        std::string actorClass = luaL_checkstring(L, 1);
+        std::string fname = FSManager::get()->GetPath()+std::string("actors/")+actorClass;
         std::string name = "unknown";
         if(n>=2)
             name  = luaL_checkstring(L, 2);
 
+        if(FSManager::get()->FileExists(fname+".lua"))
+            fname+=".lua";
+        else
+            if(FSManager::get()->FileExists(fname+".luac"))
+                fname+=".luac";
+        else {
+            OS::get()->Log("[vilo.Actor.New()] Could not find actor '%s'\n", actorClass.c_str());
+            return 0;
+        }
         lua_getglobal(L, "loadenv");
         lua_pushstring(L, fname.c_str());
         lua_call(L, 1, 1);

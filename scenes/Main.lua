@@ -1,7 +1,7 @@
 print "In \"Main.lua\""
 
 function create() 
-    actor = vilo.Actor.New("Actor.lua", "Dude")
+    actor = vilo.Actor.New("Actor", "Dude")
     actor:Hello() 
     actor:sayHello()
     return 0
