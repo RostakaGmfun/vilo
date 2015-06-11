@@ -32,6 +32,7 @@ public:
         if(!lua_isfunction(m_state, lua_gettop(m_state))) {
             OS::get()->Log("[LuaState::Call()]: function \"%s\" "
                            "not declared!\n",funcName);
+        v_ASSERTstr(false, "Attempt to call undeclared lua function");
         return (Ret)0;
     }
         PushParams(args...);
@@ -53,6 +54,7 @@ public:
         if(!lua_isfunction(m_state, lua_gettop(m_state))) {
             OS::get()->Log("[LuaState::Call()]: function \"%s\" "
                            "not declared!\n",funcName);
+        v_ASSERTstr(false, "Attempt to call undeclared lua function");
         return (Ret)0;
     }
         if(typeid(Ret)==typeid(void)) {
@@ -71,6 +73,7 @@ public:
         if(!lua_isfunction(m_state, lua_gettop(m_state))) {
             OS::get()->Log("[LuaState::Call()]: function \"%s\" "
                            "not declared!\n",funcName);
+        v_ASSERTstr(false, "Attempt to call undeclared lua function");
         return (Ret)0;
     }
         PushParams(args...);
@@ -91,6 +94,7 @@ public:
         if(!lua_isfunction(m_state, lua_gettop(m_state))) {
             OS::get()->Log("[LuaState::Call()]: function \"%s\" "
                            "not declared!\n",funcName);
+        v_ASSERTstr(false, "Attempt to call undeclared lua function");
         return (Ret)0;
     }
         if(typeid(Ret)==typeid(void)) {
