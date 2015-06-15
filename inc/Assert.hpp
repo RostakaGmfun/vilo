@@ -1,6 +1,9 @@
 #ifndef ASSERT_H
 #define ASSERT_H
 #include <OS.hpp>
+#ifdef _MSC_VER
+#define __PRETTY_FUNCTION__ __FUNCSIG__
+#endif
 
 #define v_ASSERT(expr) do { if(!expr) { \
     OS::get()->Log("v_ASSERT("#expr") failed in %s, on %i, in %s\n", \

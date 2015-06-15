@@ -98,4 +98,5 @@ bool InputManager::KeyDown(SDL_Keycode k) {
 
 std::string InputManager::ToLuaKey(KeyboardEvent* evt) {
     static std::map<SDL_Keycode,std::string> sdl_to_lua;
+    return "";
 }
