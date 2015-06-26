@@ -7,6 +7,7 @@
 
 class LuaState;
 class Scene;
+struct lua_State;
 
 class Actor: public EventListener {
 public:
@@ -17,6 +18,9 @@ public:
     void Hello();    
 
     virtual void HandleEvent(Event* evt);
+
+protected:
+    lua_State* GetTable();
 protected:
     std::string m_name;
     LuaState* m_state;

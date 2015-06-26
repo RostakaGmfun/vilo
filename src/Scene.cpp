@@ -15,8 +15,7 @@ bool Scene::Init() {
 }
 
 void Scene::Update(float dt) {
-    if(!m_state)
-        return;
+    v_ASSERT(m_state);
     m_state->Call<void>("update", dt);
     for(auto i = m_actors.begin(); i != m_actors.end(); i++) {
         (*i)->Update(dt);
