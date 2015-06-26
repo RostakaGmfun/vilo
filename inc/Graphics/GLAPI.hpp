@@ -1,0 +1,41 @@
+#ifndef GLAPI_HPP
+#define GLAPI_HPP
+#include <GL/glext.h>
+
+extern PFNGLGENBUFFERSPROC glGenBuffers;
+extern PFNGLBINDBUFFERPROC glBindBuffer;
+extern PFNGLDELETEBUFFERSPROC glDeleteBuffers;
+extern PFNGLBUFFERDATAPROC glBufferData;
+extern PFNGLGENVERTEXARRAYSPROC glGenVertexArrays;
+extern PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
+extern PFNGLSHADERSOURCEPROC glShaderSource;
+extern PFNGLCOMPILESHADERPROC glCompileShader;
+extern PFNGLCREATESHADERPROC glCreateShader;
+extern PFNGLUSEPROGRAMPROC glUseProgram;
+extern PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
+extern PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
+extern PFNGLGETSHADERIVPROC glGetShaderiv;
+extern PFNGLCREATEPROGRAMPROC glCreateProgram;
+extern PFNGLATTACHSHADERPROC glAttachShader;
+extern PFNGLBINDFRAGDATALOCATIONPROC glBindFragDataLocation;
+extern PFNGLBINDATTRIBLOCATIONPROC glBindAttribLocation;
+extern PFNGLLINKPROGRAMPROC glLinkProgram;
+extern PFNGLDELETEPROGRAMPROC glDeleteProgram;
+extern PFNGLDELETESHADERPROC glDeleteShader;
+extern PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation;
+extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
+extern PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
+extern PFNGLDELETEVERTEXARRAYSPROC glDeleteVertexArrays;
+extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
+extern PFNGLUNIFORM1FVPROC glUniform1fv;
+extern PFNGLUNIFORM2FVPROC glUniform2fv;
+extern PFNGLUNIFORM3FVPROC glUniform3fv;
+extern PFNGLUNIFORM4FVPROC glUniform4fv;
+extern PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv;
+extern PFNGLUNIFORM1IVPROC glUniform1iv;
+extern PFNGLUNIFORM1FPROC glUniform1f;
+extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
+extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
+
+#endif //GLAPI_HPP
