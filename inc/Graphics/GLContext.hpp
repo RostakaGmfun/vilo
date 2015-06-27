@@ -5,23 +5,23 @@
 
 class Window;
 
-struct ContextOptions {
+struct GLContextOptions {
     unsigned int GLmajor;
     unsigned int GLminor;
     bool multisampling;
     unsigned int numSamples;
 };
 
-class Context {
+class GLContext {
 public:
-    Context(Window* win);
-    ~Context();
+    GLContext(Window* win);
+    ~GLContext();
 
-    bool Init(ContextOptions ops);
+    bool Init(GLContextOptions ops);
     void Destroy();
 
 private:
-    void SetupGLOptions(ContextOptions ops);
+    void SetupGLOptions(GLContextOptions ops);
 
 private:
     Window* m_window;

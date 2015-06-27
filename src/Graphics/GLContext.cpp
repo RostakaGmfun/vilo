@@ -1,17 +1,17 @@
-#include <Graphics/Context.hpp>
+#include <Graphics/GLContext.hpp>
 
 #include <Window.hpp>
 #include <Assert.hpp>
 
-Context::Context(Window* win): m_window(win) {
+GLContext::GLContext(Window* win): m_window(win) {
             
 }
 
-Context::~Context() {
+GLContext::~GLContext() {
     Destroy();
 }
 
-void Context::SetupGLOptions(ContextOptions ops) {
+void GLContext::SetupGLOptions(GLContextOptions ops) {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ops.GLmajor);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ops.GLminor);
     if(ops.multisampling) {
@@ -21,7 +21,7 @@ void Context::SetupGLOptions(ContextOptions ops) {
     }
 }
 
-bool Context::Init(ContextOptions ops) {
+bool GLContext::Init(GLContextOptions ops) {
     v_ASSERT(m_window);
 
     SDL_Window* sdlWin = m_window->GetSDLWin();
@@ -37,6 +37,6 @@ bool Context::Init(ContextOptions ops) {
     return true;
 }
 
-void Context::Destroy() {
+void GLContext::Destroy() {
     SDL_GL_DeleteContext(m_context);
 }

@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 add_library(vilo STATIC src/OS.cpp src/Window.cpp src/ConfigSystem.cpp
     src/InputManager.cpp src/TaskManager.cpp src/EventManager.cpp
     src/Actor.cpp src/LuaState.cpp src/LuaStateMgr.cpp 
-    src/FSManager.cpp src/Game.cpp src/Scene.cpp src/Graphics/Context.hpp
+    src/FSManager.cpp src/Game.cpp src/Scene.cpp src/Graphics/GLContext.cpp
+    src/Graphics/GLAPI.cpp
 
 
     src/LuaWrap/api.cpp src/LuaWrap/OS.api.cpp src/LuaWrap/Window.api.cpp
