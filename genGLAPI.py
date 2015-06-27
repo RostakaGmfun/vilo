@@ -11,7 +11,7 @@ glapiHeaderHDR =   ("#ifndef GLAPI_HPP\n"
                     )
 glapiHeaderFTR =   "\n#endif //GLAPI_HPP\n"
 glapiHeaderFunction = "extern %s %s;\n"
-glapiSourceHDR = "#include <GL/glext.h>\n#include <OS.hpp>\n#include <SDL2/SDL_video.h>\n\n"
+glapiSourceHDR = "#include <GL/gl.h>\n#include <GL/glext.h>\n#include <OS.hpp>\n#include <SDL2/SDL_video.h>\n\n"
 glapiFuncPtr = "%s %s;\n"
 # Makes 'PFNGLGENBUFFERSPROC' form 'glGenBuffers'
 def makeProcTypeFromName(name):
@@ -48,7 +48,6 @@ def writeSource(lines):
     for line in lines:
         line = line[:-1]
         ln = glapiFuncPtr % (makeProcTypeFromName(line),line)
-        print ln
         out.write(ln)
     
     out.write("\n")
@@ -65,8 +64,6 @@ def main():
         print "Error opening "+sys.argv[1]
         sys.exit()
     
-    outSource = open(SRC_FNAME, 'w')
-
     glProcs = inputFile.readlines()
     writeHeader(glProcs)  
     writeSource(glProcs)

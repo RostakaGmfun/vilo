@@ -1,3 +1,4 @@
+#include <GL/gl.h>
 #include <GL/glext.h>
 #include <OS.hpp>
 #include <SDL2/SDL_video.h>
