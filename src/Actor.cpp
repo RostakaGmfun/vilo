@@ -61,6 +61,7 @@ void Actor::HandleEvent(Event* evt) {
             lua_State *L = GetTable();
             if(!L) break;
             lua_getfield(L, -1, "onKeyPress");
+            if(lua_isnil(L, -1)) break;
             lua_pushstring(L, "kp");
             lua_call(L, 1, 0);
         }
