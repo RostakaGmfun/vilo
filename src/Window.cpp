@@ -5,6 +5,7 @@
 #include <ConfigVars.hpp>
 #include <InputManager.hpp>
 #include <FSManager.hpp>
+#include <EventManager.hpp>
 
 Window::Window(): m_window(NULL) {
 
@@ -49,7 +50,7 @@ int Window::EventLoop() {
             switch(e.type) {
             case SDL_QUIT:
                 m_quit = 0;
-            break;
+                break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
             case SDL_MOUSEMOTION:
@@ -57,9 +58,19 @@ int Window::EventLoop() {
             case SDL_MOUSEBUTTONUP:
             case SDL_MOUSEWHEEL:
                 InputManager::get()->ProcessEvent(e);
-            break;
+                break;
+            case SDL_WINDOWEVENT:
+                switch(e.window.type) {
+                    case SDL_WINDOWEVENT_RESIZED:
+                        EventManager::get()->Emit(
+                            new ResizeEvent(e.window.data1, e.window.data2));
+                        break;
+                    default:
+                        break;
+                }
+                break;
             default:
-            break;
+                break;
             }
         }
     // Quit();

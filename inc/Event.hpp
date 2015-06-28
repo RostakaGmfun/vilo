@@ -3,12 +3,17 @@
 
 enum EVT_MASK {
     EVT_INPUT = 1<<0,
-    EVT_NONE = 1<<1 //just for testing
+    EVT_NONE = 1<<1,
+    EVT_WINDOW = 1<<2
 };
 
 enum EVT_TYPE {
+    // input events
     EVT_KB = 1,
-    EVT_MOUSE
+    EVT_MOUSE,
+    
+    //window events
+    EVT_RESIZE
 };
 
 class Event {

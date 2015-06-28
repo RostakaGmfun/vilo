@@ -2,7 +2,7 @@ CC=g++
 SOURCES= src/OS.cpp src/Window.cpp src/ConfigSystem.cpp  \
     src/InputManager.cpp src/TaskManager.cpp src/EventManager.cpp \
     src/Actor.cpp src/LuaState.cpp src/LuaStateMgr.cpp src/FSManager.cpp src/Game.cpp \
-	src/Scene.cpp src/Graphics/gl/GLContext.cpp src/Graphics/gl/GLAPI.cpp
+	src/Scene.cpp src/Graphics/Context.cpp src/Graphics/gl/GLContext.cpp src/Graphics/gl/GLAPI.cpp
 
 LUAWRAP= src/LuaWrap/api.cpp src/LuaWrap/OS.api.cpp src/LuaWrap/Window.api.cpp src/LuaWrap/Actor.api.cpp
 CCFLAGS= -I./inc/ -std=c++11

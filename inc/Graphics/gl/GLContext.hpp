@@ -19,9 +19,12 @@ public:
     GLContext(Window* win, GLContextOptions ops);
     ~GLContext();
 
-    bool Init();
-    void Destroy();
+    virtual bool Init();
+    virtual void Destroy();
 
+
+protected:
+    virtual void Resize(int width, int height);
 private:
     void SetupGLOptions();
 

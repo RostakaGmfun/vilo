@@ -1,8 +1,17 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
+#include <Event.hpp>
+
 #include <SDL2/SDL.h>
 
 class InputManager;
+
+class ResizeEvent: public Event {
+public:
+    ResizeEvent(int w, int h): Event(EVT_WINDOW, EVT_RESIZE), width(w), height(h) {}
+    int width;
+    int height;
+};
 
 class Window {
 public:

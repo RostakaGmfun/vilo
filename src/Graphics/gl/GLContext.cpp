@@ -42,6 +42,10 @@ bool GLContext::Init() {
     return true;
 }
 
+void GLContext::Resize(int width, int height) {
+    glViewport(0, 0, width, height);
+}
+
 void GLContext::Destroy() {
     SDL_GL_DeleteContext(m_context);
 }
