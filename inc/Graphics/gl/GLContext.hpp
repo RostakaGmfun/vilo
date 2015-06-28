@@ -1,5 +1,7 @@
-#ifndef CONTEXT_HPP
-#define CONTEXT_HPP
+#ifndef GLCONTEXT_HPP
+#define GLCONTEXT_HPP
+
+#include <Graphics/Context.hpp>
 
 #include <SDL2/SDL_video.h>
 
@@ -12,20 +14,21 @@ struct GLContextOptions {
     unsigned int numSamples;
 };
 
-class GLContext {
+class GLContext: public Context {
 public:
-    GLContext(Window* win);
+    GLContext(Window* win, GLContextOptions ops);
     ~GLContext();
 
-    bool Init(GLContextOptions ops);
+    bool Init();
     void Destroy();
 
 private:
-    void SetupGLOptions(GLContextOptions ops);
+    void SetupGLOptions();
 
 private:
     Window* m_window;
     SDL_GLContext m_context;
+    GLContextOptions m_options;
 };
 
-#endif //CONTEXT_HPP
+#endif //GLCONTEXT_HPP

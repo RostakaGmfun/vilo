@@ -2,8 +2,8 @@
 
 import sys
 
-HEADER_FNAME = "inc/Graphics/GLAPI.hpp"
-SRC_FNAME = "src/Graphics/GLAPI.cpp"
+HEADER_FNAME = "inc/Graphics/gl/GLAPI.hpp"
+SRC_FNAME = "src/Graphics/gl/GLAPI.cpp"
 
 glapiHeaderHDR =   ("#ifndef GLAPI_HPP\n"
                     "#define GLAPI_HPP\n"

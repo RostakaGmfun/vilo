@@ -1,10 +1,11 @@
 #include <Window.hpp>
 #include <Assert.hpp>
-#include <Graphics/GLContext.hpp>
+#include <Graphics/gl/GLContext.hpp>
 
 #include <GL/gl.h>
 
-GLContext::GLContext(Window* win): m_window(win) {
+GLContext::GLContext(Window* win, GLContextOptions ops): 
+                     m_window(win), m_options(ops) {
             
 }
 
@@ -12,23 +13,23 @@ GLContext::~GLContext() {
     Destroy();
 }
 
-void GLContext::SetupGLOptions(GLContextOptions ops) {
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, ops.GLmajor);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, ops.GLminor);
-    if(ops.multisampling) {
+void GLContext::SetupGLOptions() {
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, m_options.GLmajor);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, m_options.GLminor);
+    if(m_options.multisampling) {
         SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-        v_ASSERTstr(ops.numSamples, "[Context::SetupGLOptions] numSamples==0\n");
-        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, ops.numSamples);
+        v_ASSERTstr(m_options.numSamples, "[Context::SetupGLOptions] numSamples==0\n");
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, m_options.numSamples);
     }
 }
 
-bool GLContext::Init(GLContextOptions ops) {
+bool GLContext::Init() {
     v_ASSERT(m_window);
 
     SDL_Window* sdlWin = m_window->GetSDLWin();
     
     v_ASSERT(sdlWin);
-    SetupGLOptions(ops);
+    SetupGLOptions();
     m_context = SDL_GL_CreateContext(sdlWin);
     if(!m_context) {
         OS::get()->Log("[Context::Init()] Filed to create GL context. SDL error: %s\n", SDL_GetError());
