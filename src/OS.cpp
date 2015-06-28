@@ -14,6 +14,7 @@
 #include <TaskManager.hpp>
 #include <Game.hpp>
 #include <FSManager.hpp>
+#include <Graphics/GLContext.hpp>
 
 class EventSniffer: public EventListener {
 public:
@@ -33,7 +34,8 @@ int OS::Init() {
     
     if(!InitWindow())
         return 1;
-
+    if(!InitContext())
+        return 1;
     if(!LoadGame())
         return 1;
  
@@ -84,6 +86,21 @@ int hello(lua_State* state) {
 bool OS::InitWindow() {
     m_window = new Window();
     return m_window->Init();
+}
+
+bool OS::InitContext() {
+    if(m_glContext)
+        return true;
+    if(!m_window)
+        return false;
+    GLContextOptions ops;
+    m_glContext = new GLContext(m_window);
+
+    //default values for now
+    ops.GLmajor = 3;
+    ops.GLminor = 0;
+    ops.multisampling = 0;
+    return m_glContext->Init(ops);
 }
 
 int OS::Hello(lua_State* state) {

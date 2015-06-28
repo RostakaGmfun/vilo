@@ -3,6 +3,7 @@
 
 class LuaState;
 class Window;
+class GLContext;
 struct lua_State;
 
 class OS {
@@ -19,15 +20,16 @@ public:
     void RegisterAPI(LuaState *state);
     Window* GetCurrentWindow() const { return m_window; }
 private:
-    OS(): m_window(nullptr), m_retflag(0) {}
+    OS(): m_window(nullptr), m_retflag(0), m_glContext(nullptr) {}
     bool Configure();
     bool InitWindow();
     bool LoadGame();
+    bool InitContext();
 private:
     Window* m_window;
     int m_retflag;
-    LuaState* st;
     unsigned int m_startTime;
+    GLContext* m_glContext;
 };
 
 

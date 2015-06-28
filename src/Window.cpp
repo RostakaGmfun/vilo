@@ -17,7 +17,7 @@ bool Window::Init() {
         OS::get()->Log("Window::Init(): error initialising SDL\n");
         return false;
     }
-    Uint32 flags = SDL_WINDOW_SHOWN;
+    Uint32 flags = SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL;
     if(m_fullscreen)
         flags|=SDL_WINDOW_FULLSCREEN;
     m_window = SDL_CreateWindow(m_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,

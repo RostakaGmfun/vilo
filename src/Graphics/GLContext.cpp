@@ -1,7 +1,8 @@
-#include <Graphics/GLContext.hpp>
-
 #include <Window.hpp>
 #include <Assert.hpp>
+#include <Graphics/GLContext.hpp>
+
+#include <GL/gl.h>
 
 GLContext::GLContext(Window* win): m_window(win) {
             
@@ -34,6 +35,9 @@ bool GLContext::Init(GLContextOptions ops) {
         return false;
     }
 
+    glClearColor(.2,.2,.2,1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    SDL_GL_SwapWindow(m_window->GetSDLWin());
     return true;
 }
 
